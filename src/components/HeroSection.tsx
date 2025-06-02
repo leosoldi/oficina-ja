@@ -46,10 +46,10 @@ const HeroSection = () => {
               <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg">
                 Cadastre-se Grátis
               </Button>
-              <Button 
-                size="lg" 
-                variant="outline" 
-                className="border-white text-white hover:bg-white hover:text-blue-800 px-8 py-4 text-lg"
+              <Button
+                size="lg"
+                variant="outline"
+                className="bg-white/20 border-white text-white hover:bg-white/30 px-8 py-4 text-lg backdrop-blur-sm"
               >
                 Como Funciona
               </Button>
