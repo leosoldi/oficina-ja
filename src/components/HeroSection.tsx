@@ -62,7 +62,7 @@ const HeroSection = () => {
               <h3 className="text-2xl font-bold text-white mb-6">
                 Encontre serviços próximos
               </h3>
-              
+
               <div className="space-y-4">
                 {/* Campo de Localização */}
                 <div>
@@ -71,7 +71,7 @@ const HeroSection = () => {
                     placeholder="Digite sua localização"
                     value={location}
                     onChange={(e) => setLocation(e.target.value)}
-                    className="w-full h-12 bg-white text-gray-900 placeholder-gray-500 border-0 rounded-lg"
+                    className="w-full h-12 bg-white/20 text-white placeholder-white/70 border-white/30 rounded-lg backdrop-blur-sm"
                   />
                 </div>
 
@@ -79,9 +79,9 @@ const HeroSection = () => {
                 <div>
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button 
-                        variant="outline" 
-                        className="w-full h-12 bg-white text-gray-900 border-0 rounded-lg justify-between hover:bg-gray-50"
+                      <Button
+                        variant="outline"
+                        className="w-full h-12 bg-white/20 text-white border-white/30 rounded-lg justify-between hover:bg-white/30 backdrop-blur-sm"
                       >
                         {selectedService}
                         <ChevronDown className="h-4 w-4" />
@@ -102,7 +102,7 @@ const HeroSection = () => {
                 </div>
 
                 {/* Botão de Busca */}
-                <Button 
+                <Button
                   size="lg"
                   className="w-full h-12 bg-orange-500 hover:bg-orange-600 text-white rounded-lg flex items-center justify-center gap-2"
                 >
