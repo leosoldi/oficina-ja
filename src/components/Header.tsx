@@ -1,15 +1,21 @@
+
 import React, { useState } from 'react';
 import { Menu, X, Car, Wrench } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  return <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+
+  return (
+    <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            
-            <span className="text-2xl font-bold text-blue-800">OficinaJá</span>
+            <span className="text-2xl font-bold">
+              <span className="text-blue-800">Oficina</span>
+              <span className="text-orange-500">Já</span>
+            </span>
           </div>
 
           {/* Desktop Navigation */}
@@ -72,6 +78,8 @@ const Header = () => {
             </nav>
           </div>}
       </div>
-    </header>;
+    </header>
+  );
 };
+
 export default Header;
