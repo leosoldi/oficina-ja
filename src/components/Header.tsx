@@ -12,10 +12,10 @@ const Header = () => {
         <div className="flex justify-between items-center h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <span className="text-2xl font-bold">
+            <a href="/" className="text-2xl font-bold">
               <span className="text-blue-800">Oficina</span>
               <span className="text-orange-500">Já</span>
-            </span>
+            </a>
           </div>
 
           {/* Desktop Navigation */}
@@ -39,8 +39,8 @@ const Header = () => {
             <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50">
               Entrar
             </Button>
-            <Button className="bg-orange-500 hover:bg-orange-600 text-white">
-              Cadastrar
+            <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
+              <a href="/cadastro">Cadastrar</a>
             </Button>
           </div>
 
@@ -71,8 +71,8 @@ const Header = () => {
                 <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50">
                   Entrar
                 </Button>
-                <Button className="bg-orange-500 hover:bg-orange-600 text-white">
-                  Cadastrar
+                <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
+                  <a href="/cadastro">Cadastrar</a>
                 </Button>
               </div>
             </nav>

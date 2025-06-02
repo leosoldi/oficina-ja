@@ -43,8 +43,8 @@ const HeroSection = () => {
 
             {/* Botões */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg">
-                Cadastre-se Grátis
+              <Button asChild size="lg" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-4 text-lg">
+                <a href="/cadastro">Cadastre-se Grátis</a>
               </Button>
               <Button
                 size="lg"
