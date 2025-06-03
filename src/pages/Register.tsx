@@ -1,19 +1,16 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/Header';
 import WorkshopForm from '@/components/WorkshopForm';
 import DriverForm from '@/components/DriverForm';
-
 const Register = () => {
-  return (
-    <div className="min-h-screen bg-gray-50">
+  return <div className="min-h-screen bg-gray-50">
       <Header />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900 mb-2">Cadastro</h1>
-          <p className="text-lg text-gray-600">Escolha o tipo de cadastro que deseja realizar</p>
+          
+          
         </div>
 
         <Card className="w-full">
@@ -53,8 +50,6 @@ const Register = () => {
           </CardContent>
         </Card>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Register;
