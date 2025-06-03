@@ -36,8 +36,8 @@ const Header = () => {
 
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50">
-              Entrar
+            <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50" asChild>
+              <a href="/login">Entrar</a>
             </Button>
             <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
               <a href="/cadastro">Cadastrar</a>
@@ -68,8 +68,8 @@ const Header = () => {
                 Contato
               </a>
               <div className="flex flex-col space-y-2 pt-4">
-                <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50">
-                  Entrar
+                <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50" asChild>
+                  <a href="/login">Entrar</a>
                 </Button>
                 <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
                   <a href="/cadastro">Cadastrar</a>
