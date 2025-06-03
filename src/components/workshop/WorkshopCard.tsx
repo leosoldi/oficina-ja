@@ -1,9 +1,9 @@
-
 import React from 'react';
 import { Star, Clock, Phone, Navigation, MapPin, Heart, ArrowRight, Zap, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 interface Workshop {
   id: number;
@@ -28,6 +28,12 @@ interface WorkshopCardProps {
 }
 
 const WorkshopCard = ({ workshop }: WorkshopCardProps) => {
+  const navigate = useNavigate();
+
+  const handleViewProfile = () => {
+    navigate(`/oficina/${workshop.id}`);
+  };
+
   return (
     <Card className="group hover:shadow-xl transition-all duration-300 cursor-pointer border-0 shadow-md overflow-hidden">
       <div className="relative">
@@ -117,6 +123,7 @@ const WorkshopCard = ({ workshop }: WorkshopCardProps) => {
           </Button>
           <Button 
             size="sm" 
+            onClick={handleViewProfile}
             className="flex-1 bg-blue-600 hover:bg-blue-700 group"
           >
             Ver Perfil
