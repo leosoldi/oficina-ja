@@ -1,83 +1,169 @@
+
 import React from 'react';
-import { Wrench, MapPin, Phone, Mail } from 'lucide-react';
+import { MapPin, Phone, Mail, Facebook, Instagram, Linkedin, Twitter } from 'lucide-react';
+
 const Footer = () => {
-  return <footer className="bg-gray-900 text-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+  const socialLinks = [
+    { icon: Facebook, href: '#', label: 'Facebook' },
+    { icon: Instagram, href: '#', label: 'Instagram' },
+    { icon: Linkedin, href: '#', label: 'LinkedIn' },
+    { icon: Twitter, href: '#', label: 'Twitter' }
+  ];
+
+  return (
+    <footer className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0">
+        <div className="absolute top-0 left-1/4 w-64 h-64 bg-blue-600/10 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-0 right-1/4 w-64 h-64 bg-orange-600/10 rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
-          <div className="space-y-4">
+          <div className="space-y-6 lg:col-span-1">
             <div className="flex items-center space-x-2">
-              
-              <span className="text-2xl font-bold">OficinaJá</span>
+              <span className="text-3xl font-bold">
+                <span className="text-white">Oficina</span>
+                <span className="text-orange-500">Já</span>
+              </span>
             </div>
-            <p className="text-gray-300 leading-relaxed">
+            <p className="text-gray-300 leading-relaxed max-w-sm">
               Conectando motoristas às melhores oficinas mecânicas. Sua plataforma de confiança para manutenção automotiva.
             </p>
+            
+            {/* Social Links */}
+            <div className="flex space-x-4">
+              {socialLinks.map((social, index) => (
+                <a
+                  key={index}
+                  href={social.href}
+                  aria-label={social.label}
+                  className="bg-gray-800 hover:bg-orange-600 p-3 rounded-lg transition-all duration-300 transform hover:scale-110 group"
+                >
+                  <social.icon className="h-5 w-5 text-gray-400 group-hover:text-white transition-colors duration-300" />
+                </a>
+              ))}
+            </div>
           </div>
 
           {/* Links Úteis */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Links Úteis</h3>
-            <ul className="space-y-2">
-              <li><a href="#motoristas" className="text-gray-300 hover:text-orange-500 transition-colors">Para Motoristas</a></li>
-              <li><a href="#oficinas" className="text-gray-300 hover:text-orange-500 transition-colors">Para Oficinas</a></li>
-              <li><a href="#como-funciona" className="text-gray-300 hover:text-orange-500 transition-colors">Como Funciona</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">Termos de Uso</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">Política de Privacidade</a></li>
+            <h3 className="font-semibold text-lg mb-6 text-white">Links Úteis</h3>
+            <ul className="space-y-3">
+              {[
+                { href: "#motoristas", text: "Para Motoristas" },
+                { href: "#oficinas", text: "Para Oficinas" },
+                { href: "#como-funciona", text: "Como Funciona" },
+                { href: "#", text: "Termos de Uso" },
+                { href: "#", text: "Política de Privacidade" }
+              ].map((link, index) => (
+                <li key={index}>
+                  <a 
+                    href={link.href} 
+                    className="text-gray-300 hover:text-orange-400 transition-colors duration-300 relative group"
+                  >
+                    {link.text}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Suporte */}
           <div>
-            <h3 className="font-semibold text-lg mb-4">Suporte</h3>
-            <ul className="space-y-2">
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">Central de Ajuda</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">FAQ</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">Fale Conosco</a></li>
-              <li><a href="#" className="text-gray-300 hover:text-orange-500 transition-colors">Reportar Problema</a></li>
+            <h3 className="font-semibold text-lg mb-6 text-white">Suporte</h3>
+            <ul className="space-y-3">
+              {[
+                { href: "#", text: "Central de Ajuda" },
+                { href: "#", text: "FAQ" },
+                { href: "#", text: "Fale Conosco" },
+                { href: "#", text: "Reportar Problema" },
+                { href: "#", text: "Status do Sistema" }
+              ].map((link, index) => (
+                <li key={index}>
+                  <a 
+                    href={link.href} 
+                    className="text-gray-300 hover:text-orange-400 transition-colors duration-300 relative group"
+                  >
+                    {link.text}
+                    <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
+                  </a>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Contato */}
           <div id="contato">
-            <h3 className="font-semibold text-lg mb-4">Contato</h3>
-            <div className="space-y-3">
-              <div className="flex items-center space-x-3">
-                <MapPin className="h-5 w-5 text-orange-500 shrink-0" />
-                <span className="text-gray-300 text-sm">São Paulo, SP - Brasil</span>
+            <h3 className="font-semibold text-lg mb-6 text-white">Contato</h3>
+            <div className="space-y-4">
+              <div className="flex items-start space-x-3 group">
+                <div className="bg-orange-500/20 p-2 rounded-lg group-hover:bg-orange-500/30 transition-colors duration-300">
+                  <MapPin className="h-5 w-5 text-orange-400 shrink-0" />
+                </div>
+                <div>
+                  <span className="text-gray-300 text-sm block">São Paulo, SP - Brasil</span>
+                  <span className="text-gray-400 text-xs">Rua das Oficinas, 123</span>
+                </div>
               </div>
-              <div className="flex items-center space-x-3">
-                <Phone className="h-5 w-5 text-orange-500 shrink-0" />
+              
+              <div className="flex items-center space-x-3 group">
+                <div className="bg-orange-500/20 p-2 rounded-lg group-hover:bg-orange-500/30 transition-colors duration-300">
+                  <Phone className="h-5 w-5 text-orange-400 shrink-0" />
+                </div>
                 <span className="text-gray-300 text-sm">(11) 9999-9999</span>
               </div>
-              <div className="flex items-center space-x-3">
-                <Mail className="h-5 w-5 text-orange-500 shrink-0" />
+              
+              <div className="flex items-center space-x-3 group">
+                <div className="bg-orange-500/20 p-2 rounded-lg group-hover:bg-orange-500/30 transition-colors duration-300">
+                  <Mail className="h-5 w-5 text-orange-400 shrink-0" />
+                </div>
                 <span className="text-gray-300 text-sm">contato@oficinaja.com</span>
+              </div>
+            </div>
+
+            {/* Newsletter */}
+            <div className="mt-6">
+              <h4 className="font-medium text-white mb-3">Newsletter</h4>
+              <div className="flex">
+                <input
+                  type="email"
+                  placeholder="Seu e-mail"
+                  className="flex-1 bg-gray-800 text-white px-3 py-2 rounded-l-lg border border-gray-700 focus:border-orange-400 focus:outline-none text-sm"
+                />
+                <button className="bg-orange-500 hover:bg-orange-600 px-4 py-2 rounded-r-lg transition-colors duration-300 text-sm font-medium">
+                  Assinar
+                </button>
               </div>
             </div>
           </div>
         </div>
 
         {/* Bottom */}
-        <div className="border-t border-gray-800 mt-12 pt-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+        <div className="border-t border-gray-800 pt-8">
+          <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-gray-400 text-sm">
               © 2024 OficinaJá. Todos os direitos reservados.
             </p>
-            <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors text-sm">
-                Termos
-              </a>
-              <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors text-sm">
-                Privacidade
-              </a>
-              <a href="#" className="text-gray-400 hover:text-orange-500 transition-colors text-sm">
-                Cookies
-              </a>
+            <div className="flex space-x-6">
+              {['Termos', 'Privacidade', 'Cookies'].map((item, index) => (
+                <a
+                  key={index}
+                  href="#"
+                  className="text-gray-400 hover:text-orange-400 transition-colors duration-300 text-sm relative group"
+                >
+                  {item}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-orange-400 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+              ))}
             </div>
           </div>
         </div>
       </div>
-    </footer>;
+    </footer>
+  );
 };
+
 export default Footer;
