@@ -26,22 +26,22 @@ const DriverLoginForm = () => {
   };
 
   return (
-    <Card className="border-0 bg-gradient-to-br from-orange-50/50 to-white shadow-xl backdrop-blur-sm">
-      <CardContent className="pt-8 px-8 pb-8">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-          <div className="space-y-3">
-            <Label htmlFor="email" className="text-base font-semibold text-gray-700">
+    <Card className="border-0 bg-gradient-to-br from-orange-50/50 to-white shadow-lg backdrop-blur-sm">
+      <CardContent className="pt-6 px-6 pb-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-sm font-semibold text-gray-700">
               Email
             </Label>
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative">
-                <Mail className="absolute left-4 top-4 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                 <Input
                   id="email"
                   type="email"
                   placeholder="seu@email.com"
-                  className={`pl-12 h-14 text-base bg-white/80 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 focus:border-orange-500 focus:shadow-lg focus:shadow-orange-500/20 ${
+                  className={`pl-10 h-10 text-sm bg-white/80 backdrop-blur-sm border-2 rounded-lg transition-all duration-300 focus:border-orange-500 focus:shadow-md focus:shadow-orange-500/20 ${
                     errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-200 hover:border-orange-300'
                   }`}
                   {...register('email', {
@@ -55,25 +55,25 @@ const DriverLoginForm = () => {
               </div>
             </div>
             {errors.email && (
-              <p className="text-sm text-red-600 flex items-center mt-2 animate-fade-in">
+              <p className="text-sm text-red-600 flex items-center mt-1 animate-fade-in">
                 {errors.email.message}
               </p>
             )}
           </div>
 
-          <div className="space-y-3">
-            <Label htmlFor="password" className="text-base font-semibold text-gray-700">
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-sm font-semibold text-gray-700">
               Senha
             </Label>
             <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/20 to-orange-600/20 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-orange-600/10 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               <div className="relative">
-                <Lock className="absolute left-4 top-4 h-5 w-5 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
+                <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400 group-focus-within:text-orange-500 transition-colors" />
                 <Input
                   id="password"
                   type="password"
                   placeholder="Digite sua senha"
-                  className={`pl-12 h-14 text-base bg-white/80 backdrop-blur-sm border-2 rounded-xl transition-all duration-300 focus:border-orange-500 focus:shadow-lg focus:shadow-orange-500/20 ${
+                  className={`pl-10 h-10 text-sm bg-white/80 backdrop-blur-sm border-2 rounded-lg transition-all duration-300 focus:border-orange-500 focus:shadow-md focus:shadow-orange-500/20 ${
                     errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-200 hover:border-orange-300'
                   }`}
                   {...register('password', {
@@ -87,21 +87,21 @@ const DriverLoginForm = () => {
               </div>
             </div>
             {errors.password && (
-              <p className="text-sm text-red-600 flex items-center mt-2 animate-fade-in">
+              <p className="text-sm text-red-600 flex items-center mt-1 animate-fade-in">
                 {errors.password.message}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col space-y-6 pt-4">
+          <div className="flex flex-col space-y-4 pt-2">
             <Button 
               type="submit" 
               disabled={isSubmitting} 
-              className="w-full h-14 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold text-lg rounded-xl transition-all duration-300 transform hover:scale-[1.02] hover:shadow-lg hover:shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-10 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white font-semibold text-sm rounded-lg transition-all duration-300 transform hover:scale-[1.02] hover:shadow-md hover:shadow-orange-500/25 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {isSubmitting ? (
                 <div className="flex items-center">
-                  <div className="animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full mr-2"></div>
+                  <div className="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full mr-2"></div>
                   Entrando...
                 </div>
               ) : (
@@ -115,8 +115,8 @@ const DriverLoginForm = () => {
               </a>
             </div>
             
-            <div className="text-center border-t border-gray-200 pt-6">
-              <p className="text-base text-gray-600">
+            <div className="text-center border-t border-gray-200 pt-4">
+              <p className="text-sm text-gray-600">
                 Não tem conta?{' '}
                 <a href="/cadastro" className="text-orange-600 hover:text-orange-700 font-semibold hover:underline transition-colors">
                   Cadastre-se aqui
