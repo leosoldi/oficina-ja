@@ -8,14 +8,6 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import NotFound from "./pages/NotFound";
-import DriverDashboard from "./pages/DriverDashboard";
-import VehicleManagement from "./pages/VehicleManagement";
-import WorkshopSearch from "./pages/WorkshopSearch";
-import WorkshopProfile from "./pages/WorkshopProfile";
-import ServiceScheduling from "./pages/ServiceScheduling";
-import BudgetManagement from "./pages/BudgetManagement";
-import ServiceTracking from "./pages/ServiceTracking";
-import ServiceHistory from "./pages/ServiceHistory";
 
 const queryClient = new QueryClient();
 
@@ -29,14 +21,6 @@ const App = () => (
           <Route path="/" element={<Index />} />
           <Route path="/cadastro" element={<Register />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<DriverDashboard />} />
-          <Route path="/veiculo" element={<VehicleManagement />} />
-          <Route path="/buscar" element={<WorkshopSearch />} />
-          <Route path="/oficina/:id" element={<WorkshopProfile />} />
-          <Route path="/agendar/:workshopId" element={<ServiceScheduling />} />
-          <Route path="/orcamentos" element={<BudgetManagement />} />
-          <Route path="/acompanhar" element={<ServiceTracking />} />
-          <Route path="/historico" element={<ServiceHistory />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
