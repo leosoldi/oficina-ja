@@ -1,15 +1,18 @@
 
 import React from 'react';
-import { Home, Search, Calendar, User, Settings } from 'lucide-react';
+import { Home, Search, Calendar, User, Car, FileText, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useLocation } from 'react-router-dom';
 
 const MobileBottomNav = () => {
+  const location = useLocation();
+  
   const navItems = [
-    { icon: Home, label: 'Início', href: '/', active: true },
-    { icon: Search, label: 'Buscar', href: '/buscar' },
-    { icon: Calendar, label: 'Agenda', href: '/agenda' },
-    { icon: User, label: 'Perfil', href: '/perfil' },
-    { icon: Settings, label: 'Config', href: '/config' },
+    { icon: Home, label: 'Início', href: '/dashboard', active: location.pathname === '/dashboard' },
+    { icon: Search, label: 'Buscar', href: '/buscar', active: location.pathname === '/buscar' },
+    { icon: Calendar, label: 'Agenda', href: '/acompanhar', active: location.pathname === '/acompanhar' },
+    { icon: FileText, label: 'Orçamentos', href: '/orcamentos', active: location.pathname === '/orcamentos' },
+    { icon: User, label: 'Perfil', href: '/veiculo', active: location.pathname === '/veiculo' },
   ];
 
   return (
