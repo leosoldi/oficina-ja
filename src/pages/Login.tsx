@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -6,15 +5,17 @@ import Header from '@/components/Header';
 import WorkshopLoginForm from '@/components/WorkshopLoginForm';
 import DriverLoginForm from '@/components/DriverLoginForm';
 import { Wrench, User } from 'lucide-react';
-
 const Login = () => {
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50 relative overflow-hidden">
+  return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50 relative overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0">
         <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-blue-200/20 rounded-full blur-3xl animate-pulse"></div>
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-200/20 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-purple-200/15 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }}></div>
+        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-orange-200/20 rounded-full blur-3xl animate-pulse" style={{
+        animationDelay: '2s'
+      }}></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-purple-200/15 rounded-full blur-3xl animate-pulse" style={{
+        animationDelay: '4s'
+      }}></div>
       </div>
 
       <Header />
@@ -36,29 +37,21 @@ const Login = () => {
           </p>
         </div>
 
-        <Card className="w-full max-w-3xl mx-auto bg-white/90 backdrop-blur-sm border-0 shadow-xl animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          <CardHeader className="text-center pb-6 pt-8">
-            <CardTitle className="text-2xl lg:text-3xl font-bold text-gray-900 mb-3">
-              Faça seu Login
-            </CardTitle>
-            <CardDescription className="text-base text-gray-600 max-w-xl mx-auto">
-              Escolha seu tipo de conta e entre para aproveitar todos os recursos da nossa plataforma
-            </CardDescription>
+        <Card className="w-full max-w-3xl mx-auto bg-white/90 backdrop-blur-sm border-0 shadow-xl animate-fade-in" style={{
+        animationDelay: '0.2s'
+      }}>
+          <CardHeader className="text-center pb-6 pt-8 py-[12px]">
+            
+            
           </CardHeader>
           <CardContent className="px-6 pb-8">
             <Tabs defaultValue="workshop" className="w-full">
               <TabsList className="grid w-full grid-cols-2 mb-8 h-12 bg-gray-100/80 backdrop-blur-sm rounded-xl p-1">
-                <TabsTrigger 
-                  value="workshop" 
-                  className="text-base py-3 px-4 rounded-lg font-semibold transition-all duration-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md"
-                >
+                <TabsTrigger value="workshop" className="text-base py-3 px-4 rounded-lg font-semibold transition-all duration-300 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md">
                   <Wrench className="h-4 w-4 mr-2" />
                   Sou uma Oficina
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="driver" 
-                  className="text-base py-3 px-4 rounded-lg font-semibold transition-all duration-300 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md"
-                >
+                <TabsTrigger value="driver" className="text-base py-3 px-4 rounded-lg font-semibold transition-all duration-300 data-[state=active]:bg-orange-500 data-[state=active]:text-white data-[state=active]:shadow-md">
                   <User className="h-4 w-4 mr-2" />
                   Sou um Motorista
                 </TabsTrigger>
@@ -90,7 +83,9 @@ const Login = () => {
         </Card>
 
         {/* Trust indicators */}
-        <div className="mt-12 text-center animate-fade-in" style={{ animationDelay: '0.4s' }}>
+        <div className="mt-12 text-center animate-fade-in" style={{
+        animationDelay: '0.4s'
+      }}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto">
             <div className="bg-white/60 backdrop-blur-sm p-4 rounded-xl shadow-lg border border-white/20">
               <div className="text-2xl font-bold text-blue-600 mb-1">1000+</div>
@@ -107,8 +102,6 @@ const Login = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Login;
