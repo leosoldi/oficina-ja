@@ -1,17 +1,22 @@
+
 import React from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import Header from '@/components/Header';
 import WorkshopLoginForm from '@/components/WorkshopLoginForm';
 import DriverLoginForm from '@/components/DriverLoginForm';
+
 const Login = () => {
-  return <div className="min-h-screen bg-gray-50">
+  return (
+    <div className="min-h-screen bg-gray-50">
       <Header />
       <div className="max-w-4xl mx-auto px-4 py-8">
         <Card className="w-full">
-          <CardHeader>
-            
-            
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl font-bold text-gray-900">Bem-vindo de volta!</CardTitle>
+            <CardDescription className="text-lg text-gray-600">
+              Entre na sua conta para acessar nossa plataforma
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <Tabs defaultValue="workshop" className="w-full">
@@ -43,6 +48,8 @@ const Login = () => {
           </CardContent>
         </Card>
       </div>
-    </div>;
+    </div>
+  );
 };
+
 export default Login;

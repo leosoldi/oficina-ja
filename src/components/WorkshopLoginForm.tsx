@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
+import { Mail, Lock } from 'lucide-react';
 
 interface WorkshopLoginFormData {
   email: string;
@@ -25,62 +26,85 @@ const WorkshopLoginForm = () => {
   };
 
   return (
-    <Card>
+    <Card className="border-blue-200 shadow-lg">
       <CardContent className="pt-6">
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-2">
-            <Label htmlFor="email">Email da Oficina</Label>
-            <Input
-              id="email"
-              type="email"
-              placeholder="contato@oficina.com"
-              {...register('email', {
-                required: 'Email é obrigatório',
-                pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                  message: 'Email inválido'
-                }
-              })}
-            />
+            <Label htmlFor="email" className="text-sm font-medium text-gray-700">
+              Email da Oficina
+            </Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="contato@oficina.com"
+                className={`pl-10 ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'}`}
+                {...register('email', {
+                  required: 'Email é obrigatório',
+                  pattern: {
+                    value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                    message: 'Email inválido'
+                  }
+                })}
+              />
+            </div>
             {errors.email && (
-              <p className="text-sm text-red-600">{errors.email.message}</p>
+              <p className="text-sm text-red-600 flex items-center mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="password">Senha</Label>
-            <Input
-              id="password"
-              type="password"
-              placeholder="Digite sua senha"
-              {...register('password', {
-                required: 'Senha é obrigatória',
-                minLength: {
-                  value: 6,
-                  message: 'Senha deve ter pelo menos 6 caracteres'
-                }
-              })}
-            />
+            <Label htmlFor="password" className="text-sm font-medium text-gray-700">
+              Senha
+            </Label>
+            <div className="relative">
+              <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
+              <Input
+                id="password"
+                type="password"
+                placeholder="Digite sua senha"
+                className={`pl-10 ${errors.password ? 'border-red-500 focus:border-red-500' : 'border-gray-300 focus:border-blue-500'}`}
+                {...register('password', {
+                  required: 'Senha é obrigatória',
+                  minLength: {
+                    value: 6,
+                    message: 'Senha deve ter pelo menos 6 caracteres'
+                  }
+                })}
+              />
+            </div>
             {errors.password && (
-              <p className="text-sm text-red-600">{errors.password.message}</p>
+              <p className="text-sm text-red-600 flex items-center mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
           <div className="flex flex-col space-y-4 pt-4">
-            <Button type="submit" disabled={isSubmitting} className="w-full bg-blue-600 hover:bg-blue-700">
-              {isSubmitting ? 'Entrando...' : 'Entrar'}
+            <Button 
+              type="submit" 
+              disabled={isSubmitting} 
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 text-base transition-colors"
+            >
+              {isSubmitting ? 'Entrando...' : 'Entrar como Oficina'}
             </Button>
             
-            <div className="text-center">
-              <a href="/cadastro" className="text-sm text-blue-600 hover:underline">
-                Não tem conta? Cadastre-se aqui
+            <div className="flex items-center justify-between text-sm">
+              <a href="#" className="text-gray-600 hover:text-blue-600 hover:underline transition-colors">
+                Esqueceu sua senha?
               </a>
             </div>
             
-            <div className="text-center">
-              <a href="#" className="text-sm text-gray-600 hover:underline">
-                Esqueceu sua senha?
-              </a>
+            <div className="text-center border-t pt-4">
+              <p className="text-sm text-gray-600">
+                Não tem conta?{' '}
+                <a href="/cadastro" className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors">
+                  Cadastre-se aqui
+                </a>
+              </p>
             </div>
           </div>
         </form>
