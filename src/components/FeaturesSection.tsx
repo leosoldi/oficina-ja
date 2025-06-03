@@ -156,29 +156,6 @@ const FeaturesSection = () => {
             ))}
           </div>
         </div>
-
-        {/* CTA Section */}
-        <div className="mt-24 text-center animate-fade-in">
-          <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 rounded-3xl p-8 lg:p-16 relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent"></div>
-            <div className="relative z-10">
-              <h3 className="text-3xl lg:text-4xl font-bold text-white mb-4">
-                Pronto para começar sua jornada?
-              </h3>
-              <p className="text-blue-100 text-lg lg:text-xl mb-8 max-w-2xl mx-auto">
-                Junte-se a milhares de motoristas e oficinas que já confiam na OficinaJá.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl">
-                  Cadastrar como Motorista
-                </button>
-                <button className="bg-white hover:bg-gray-100 text-blue-800 px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                  Cadastrar como Oficina
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
