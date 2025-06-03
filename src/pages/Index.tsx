@@ -16,8 +16,6 @@ const Index = () => {
         <HowItWorksSection />
       </main>
       <Footer />
-      {/* Mobile bottom padding to account for bottom navigation */}
-      <div className="h-16 md:h-0"></div>
     </div>
   );
 };
