@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -138,8 +137,7 @@ const WorkshopProfile = () => {
             <Card>
               <CardHeader>
                 <CardTitle className="flex items-center space-x-2">
-                  <Awar
-d className="h-5 w-5" />
+                  <Award className="h-5 w-5" />
                   <span>Certificações</span>
                 </CardTitle>
               </CardHeader>
