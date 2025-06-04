@@ -61,6 +61,10 @@ const AppointmentCard = ({
     setIsStatusModalOpen(true);
   };
 
+  const handleEditAppointment = () => {
+    setIsStatusModalOpen(true);
+  };
+
   const handleFinishService = () => {
     const updatedAppointment = {
       ...appointment,
@@ -127,7 +131,7 @@ const AppointmentCard = ({
             <Button variant="outline" size="sm">
               <Eye className="h-4 w-4" />
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={handleEditAppointment}>
               <Edit className="h-4 w-4" />
             </Button>
             {appointment.status === 'confirmed' && (
