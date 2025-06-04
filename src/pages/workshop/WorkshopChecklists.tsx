@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowLeft, Plus, Edit, Trash2, Save } from 'lucide-react';
+import { ArrowLeft, Plus, Edit, Trash2, Save, ClipboardList, FileText, Download } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
@@ -136,21 +136,24 @@ const WorkshopChecklists = () => {
   const saidaChecklists = checklists.filter(c => c.type === 'saida');
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b">
+      <header className="bg-white shadow-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-20">
             <div className="flex items-center">
               <Link to="/workshop/dashboard">
-                <Button variant="ghost" size="sm">
+                <Button variant="ghost" size="sm" className="mr-4">
                   <ArrowLeft className="h-4 w-4 mr-2" />
                   Voltar ao Dashboard
                 </Button>
               </Link>
-              <h1 className="text-xl font-semibold text-gray-900 ml-4">Checklists Personalizados</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-gray-900">Checklists Personalizados</h1>
+                <p className="text-sm text-gray-500">Padronize os processos de entrada e saída de veículos</p>
+              </div>
             </div>
-            <Button onClick={() => setIsCreating(true)} className="bg-blue-600 hover:bg-blue-700">
+            <Button onClick={() => setIsCreating(true)} size="lg" className="bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700">
               <Plus className="h-4 w-4 mr-2" />
               Novo Checklist
             </Button>
@@ -160,31 +163,35 @@ const WorkshopChecklists = () => {
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="space-y-6">
-          {/* Formulário de Criação/Edição */}
+        <div className="space-y-8">
+          {/* Creation/Edit Form */}
           {isCreating && (
-            <Card>
+            <Card className="border-0 shadow-lg">
               <CardHeader>
-                <CardTitle>{editingId ? 'Editar Checklist' : 'Criar Novo Checklist'}</CardTitle>
+                <CardTitle className="flex items-center space-x-2">
+                  <Plus className="h-5 w-5 text-orange-600" />
+                  <span>{editingId ? 'Editar Checklist' : 'Criar Novo Checklist'}</span>
+                </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="checklistName">Nome do Checklist</Label>
+              <CardContent className="space-y-6">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="checklistName" className="text-sm font-medium">Nome do Checklist</Label>
                     <Input
                       id="checklistName"
                       value={newChecklist.name}
                       onChange={(e) => setNewChecklist(prev => ({ ...prev, name: e.target.value }))}
                       placeholder="Ex: Inspeção de Entrada"
+                      className="h-12"
                     />
                   </div>
-                  <div>
-                    <Label htmlFor="checklistType">Tipo</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="checklistType" className="text-sm font-medium">Tipo</Label>
                     <select
                       id="checklistType"
                       value={newChecklist.type}
                       onChange={(e) => setNewChecklist(prev => ({ ...prev, type: e.target.value as 'entrada' | 'saida' }))}
-                      className="w-full h-10 px-3 py-2 border border-input bg-background rounded-md"
+                      className="w-full h-12 px-3 py-2 border border-input bg-background rounded-md"
                     >
                       <option value="entrada">Entrada</option>
                       <option value="saida">Saída</option>
@@ -192,52 +199,61 @@ const WorkshopChecklists = () => {
                   </div>
                 </div>
 
-                {/* Adicionar Itens */}
-                <div>
-                  <Label>Itens do Checklist</Label>
-                  <div className="flex space-x-2 mt-2">
+                {/* Add Items */}
+                <div className="space-y-4">
+                  <Label className="text-sm font-medium">Itens do Checklist</Label>
+                  <div className="flex space-x-2">
                     <Input
                       value={newItemText}
                       onChange={(e) => setNewItemText(e.target.value)}
                       placeholder="Digite um item do checklist"
                       onKeyPress={(e) => e.key === 'Enter' && handleAddItem()}
+                      className="flex-1 h-12"
                     />
-                    <Button onClick={handleAddItem} type="button">
+                    <Button onClick={handleAddItem} type="button" className="h-12 px-6">
                       <Plus className="h-4 w-4" />
                     </Button>
                   </div>
                 </div>
 
-                {/* Lista de Itens */}
+                {/* Items List */}
                 {newChecklist.items.length > 0 && (
-                  <div className="border rounded-lg p-4">
-                    <h4 className="font-medium mb-3">Itens do Checklist:</h4>
-                    <div className="space-y-2">
-                      {newChecklist.items.map((item) => (
-                        <div key={item.id} className="flex items-center justify-between bg-gray-50 p-2 rounded">
-                          <span>{item.text}</span>
-                          <Button
-                            variant="ghost"
-                            size="sm"
-                            onClick={() => handleRemoveItem(item.id)}
-                          >
-                            <Trash2 className="h-4 w-4 text-red-500" />
-                          </Button>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  <Card className="bg-gray-50 border-gray-200">
+                    <CardContent className="p-4">
+                      <h4 className="font-medium mb-4 text-gray-900">Itens do Checklist ({newChecklist.items.length})</h4>
+                      <div className="space-y-3">
+                        {newChecklist.items.map((item, index) => (
+                          <div key={item.id} className="flex items-center justify-between bg-white p-3 rounded-lg border">
+                            <div className="flex items-center space-x-3">
+                              <span className="w-6 h-6 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center text-sm font-medium">
+                                {index + 1}
+                              </span>
+                              <span className="text-gray-900">{item.text}</span>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="hover:bg-red-100"
+                            >
+                              <Trash2 className="h-4 w-4 text-red-500" />
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </CardContent>
+                  </Card>
                 )}
 
-                <div className="flex justify-end space-x-2">
+                <div className="flex justify-end space-x-4">
                   <Button variant="outline" onClick={() => {
                     setIsCreating(false);
                     setEditingId(null);
                     setNewChecklist({ name: '', type: 'entrada', items: [] });
-                  }}>
+                  }} size="lg">
                     Cancelar
                   </Button>
-                  <Button onClick={handleSaveChecklist} className="bg-green-600 hover:bg-green-700">
+                  <Button onClick={handleSaveChecklist} size="lg" className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800">
                     <Save className="h-4 w-4 mr-2" />
                     {editingId ? 'Atualizar' : 'Salvar'} Checklist
                   </Button>
@@ -246,73 +262,117 @@ const WorkshopChecklists = () => {
             </Card>
           )}
 
-          {/* Tabs para separar checklists */}
+          {/* Tabs for Checklists */}
           <Tabs defaultValue="entrada" className="w-full">
-            <TabsList className="grid w-full grid-cols-2">
-              <TabsTrigger value="entrada">Checklists de Entrada</TabsTrigger>
-              <TabsTrigger value="saida">Checklists de Saída</TabsTrigger>
+            <TabsList className="grid w-full grid-cols-2 mb-8">
+              <TabsTrigger value="entrada" className="text-base">
+                <ClipboardList className="h-4 w-4 mr-2" />
+                Checklists de Entrada ({entradaChecklists.length})
+              </TabsTrigger>
+              <TabsTrigger value="saida" className="text-base">
+                <FileText className="h-4 w-4 mr-2" />
+                Checklists de Saída ({saidaChecklists.length})
+              </TabsTrigger>
             </TabsList>
             
-            <TabsContent value="entrada" className="space-y-4">
+            <TabsContent value="entrada" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {entradaChecklists.map((checklist) => (
-                  <Card key={checklist.id}>
-                    <CardHeader className="pb-3">
+                  <Card key={checklist.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <CardHeader className="pb-4">
                       <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg">{checklist.name}</CardTitle>
-                        <div className="flex space-x-1">
-                          <Button variant="ghost" size="sm" onClick={() => handleEditChecklist(checklist)}>
-                            <Edit className="h-4 w-4" />
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-green-500 to-green-600 rounded-lg flex items-center justify-center">
+                            <ClipboardList className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg text-gray-900">{checklist.name}</CardTitle>
+                            <p className="text-sm text-gray-500">{checklist.items.length} itens</p>
+                          </div>
+                        </div>
+                        <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="sm" onClick={() => handleEditChecklist(checklist)} className="hover:bg-blue-100">
+                            <Edit className="h-4 w-4 text-blue-600" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleDeleteChecklist(checklist.id)}>
-                            <Trash2 className="h-4 w-4 text-red-500" />
+                          <Button variant="ghost" size="sm" onClick={() => handleDeleteChecklist(checklist.id)} className="hover:bg-red-100">
+                            <Trash2 className="h-4 w-4 text-red-600" />
                           </Button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-2">
-                        {checklist.items.map((item) => (
-                          <div key={item.id} className="flex items-center space-x-2">
-                            <Checkbox id={item.id} />
-                            <label htmlFor={item.id} className="text-sm">{item.text}</label>
+                      <div className="space-y-3 mb-6">
+                        {checklist.items.slice(0, 3).map((item) => (
+                          <div key={item.id} className="flex items-center space-x-3">
+                            <Checkbox id={`${checklist.id}-${item.id}`} />
+                            <label htmlFor={`${checklist.id}-${item.id}`} className="text-sm text-gray-700">{item.text}</label>
                           </div>
                         ))}
+                        {checklist.items.length > 3 && (
+                          <p className="text-xs text-gray-500">+ {checklist.items.length - 3} itens adicionais</p>
+                        )}
                       </div>
-                      <p className="text-sm text-gray-500 mt-3">{checklist.items.length} itens</p>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline" className="flex-1 hover:bg-blue-50">
+                          <Download className="h-4 w-4 mr-2" />
+                          Usar Checklist
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => handleEditChecklist(checklist)} className="hover:bg-gray-50">
+                          Editar
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
               </div>
             </TabsContent>
             
-            <TabsContent value="saida" className="space-y-4">
+            <TabsContent value="saida" className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {saidaChecklists.map((checklist) => (
-                  <Card key={checklist.id}>
-                    <CardHeader className="pb-3">
+                  <Card key={checklist.id} className="border-0 shadow-lg hover:shadow-xl transition-all duration-300 group">
+                    <CardHeader className="pb-4">
                       <div className="flex justify-between items-start">
-                        <CardTitle className="text-lg">{checklist.name}</CardTitle>
-                        <div className="flex space-x-1">
-                          <Button variant="ghost" size="sm" onClick={() => handleEditChecklist(checklist)}>
-                            <Edit className="h-4 w-4" />
+                        <div className="flex items-center space-x-3">
+                          <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center">
+                            <FileText className="h-6 w-6 text-white" />
+                          </div>
+                          <div>
+                            <CardTitle className="text-lg text-gray-900">{checklist.name}</CardTitle>
+                            <p className="text-sm text-gray-500">{checklist.items.length} itens</p>
+                          </div>
+                        </div>
+                        <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <Button variant="ghost" size="sm" onClick={() => handleEditChecklist(checklist)} className="hover:bg-blue-100">
+                            <Edit className="h-4 w-4 text-blue-600" />
                           </Button>
-                          <Button variant="ghost" size="sm" onClick={() => handleDeleteChecklist(checklist.id)}>
-                            <Trash2 className="h-4 w-4 text-red-500" />
+                          <Button variant="ghost" size="sm" onClick={() => handleDeleteChecklist(checklist.id)} className="hover:bg-red-100">
+                            <Trash2 className="h-4 w-4 text-red-600" />
                           </Button>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="space-y-2">
-                        {checklist.items.map((item) => (
-                          <div key={item.id} className="flex items-center space-x-2">
-                            <Checkbox id={item.id} />
-                            <label htmlFor={item.id} className="text-sm">{item.text}</label>
+                      <div className="space-y-3 mb-6">
+                        {checklist.items.slice(0, 3).map((item) => (
+                          <div key={item.id} className="flex items-center space-x-3">
+                            <Checkbox id={`${checklist.id}-${item.id}`} />
+                            <label htmlFor={`${checklist.id}-${item.id}`} className="text-sm text-gray-700">{item.text}</label>
                           </div>
                         ))}
+                        {checklist.items.length > 3 && (
+                          <p className="text-xs text-gray-500">+ {checklist.items.length - 3} itens adicionais</p>
+                        )}
                       </div>
-                      <p className="text-sm text-gray-500 mt-3">{checklist.items.length} itens</p>
+                      <div className="flex space-x-2">
+                        <Button size="sm" variant="outline" className="flex-1 hover:bg-blue-50">
+                          <Download className="h-4 w-4 mr-2" />
+                          Usar Checklist
+                        </Button>
+                        <Button size="sm" variant="outline" onClick={() => handleEditChecklist(checklist)} className="hover:bg-gray-50">
+                          Editar
+                        </Button>
+                      </div>
                     </CardContent>
                   </Card>
                 ))}
