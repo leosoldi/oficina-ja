@@ -24,6 +24,7 @@ interface AppointmentListProps {
   onStatusFilterChange: (filter: string) => void;
   getStatusColor: (status: string) => string;
   getStatusText: (status: string) => string;
+  onUpdateAppointment?: (updatedAppointment: Appointment) => void;
 }
 
 const AppointmentList = ({ 
@@ -31,7 +32,8 @@ const AppointmentList = ({
   statusFilter, 
   onStatusFilterChange, 
   getStatusColor, 
-  getStatusText 
+  getStatusText,
+  onUpdateAppointment
 }: AppointmentListProps) => {
   const filteredAppointments = appointments.filter(appointment => 
     statusFilter === 'all' || appointment.status === statusFilter
@@ -61,6 +63,9 @@ const AppointmentList = ({
               <option value="all">Todos</option>
               <option value="confirmed">Confirmado</option>
               <option value="in-progress">Em andamento</option>
+              <option value="analyzing">Analisando</option>
+              <option value="waiting-parts">Aguardando peças</option>
+              <option value="almost-done">Quase concluído</option>
               <option value="waiting">Aguardando</option>
               <option value="completed">Concluído</option>
             </select>
@@ -75,6 +80,7 @@ const AppointmentList = ({
               appointment={appointment}
               getStatusColor={getStatusColor}
               getStatusText={getStatusText}
+              onUpdateAppointment={onUpdateAppointment}
             />
           ))}
         </div>

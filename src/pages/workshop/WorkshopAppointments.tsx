@@ -5,11 +5,25 @@ import AppointmentStats from '@/components/appointments/AppointmentStats';
 import AppointmentCalendar from '@/components/appointments/AppointmentCalendar';
 import AppointmentList from '@/components/appointments/AppointmentList';
 
+interface Appointment {
+  id: number;
+  time: string;
+  duration: string;
+  client: string;
+  phone: string;
+  email: string;
+  vehicle: string;
+  plate: string;
+  service: string;
+  status: string;
+  notes: string;
+}
+
 const WorkshopAppointments = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [statusFilter, setStatusFilter] = useState('all');
-
-  const appointments = [
+  
+  const [appointments, setAppointments] = useState<Appointment[]>([
     {
       id: 1,
       time: '08:00',
@@ -62,12 +76,23 @@ const WorkshopAppointments = () => {
       status: 'confirmed',
       notes: 'Verificar amortecedores dianteiros'
     }
-  ];
+  ]);
+
+  const handleUpdateAppointment = (updatedAppointment: Appointment) => {
+    setAppointments(prevAppointments =>
+      prevAppointments.map(appointment =>
+        appointment.id === updatedAppointment.id ? updatedAppointment : appointment
+      )
+    );
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'confirmed': return 'bg-blue-100 text-blue-800';
       case 'in-progress': return 'bg-orange-100 text-orange-800';
+      case 'analyzing': return 'bg-yellow-100 text-yellow-800';
+      case 'waiting-parts': return 'bg-orange-100 text-orange-800';
+      case 'almost-done': return 'bg-green-100 text-green-800';
       case 'waiting': return 'bg-yellow-100 text-yellow-800';
       case 'completed': return 'bg-green-100 text-green-800';
       case 'cancelled': return 'bg-red-100 text-red-800';
@@ -79,6 +104,9 @@ const WorkshopAppointments = () => {
     switch (status) {
       case 'confirmed': return 'Confirmado';
       case 'in-progress': return 'Em andamento';
+      case 'analyzing': return 'Analisando';
+      case 'waiting-parts': return 'Aguardando peças';
+      case 'almost-done': return 'Quase concluído';
       case 'waiting': return 'Aguardando';
       case 'completed': return 'Concluído';
       case 'cancelled': return 'Cancelado';
@@ -114,6 +142,7 @@ const WorkshopAppointments = () => {
             onStatusFilterChange={setStatusFilter}
             getStatusColor={getStatusColor}
             getStatusText={getStatusText}
+            onUpdateAppointment={handleUpdateAppointment}
           />
         </div>
       </div>
