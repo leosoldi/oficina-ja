@@ -15,6 +15,7 @@ import WorkshopAppointments from "./pages/workshop/WorkshopAppointments";
 import WorkshopQuotes from "./pages/workshop/WorkshopQuotes";
 import NewQuote from "./pages/workshop/NewQuote";
 import EditQuote from "./pages/workshop/EditQuote";
+import WorkshopChecklists from "./pages/workshop/WorkshopChecklists";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -37,6 +38,7 @@ const App = () => (
           <Route path="/workshop/orcamentos" element={<WorkshopQuotes />} />
           <Route path="/workshop/orcamentos/novo" element={<NewQuote />} />
           <Route path="/workshop/orcamentos/editar/:id" element={<EditQuote />} />
+          <Route path="/workshop/checklists" element={<WorkshopChecklists />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
