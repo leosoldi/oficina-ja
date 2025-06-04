@@ -12,6 +12,7 @@ import WorkshopProfile from "./pages/WorkshopProfile";
 import WorkshopDashboard from "./pages/WorkshopDashboard";
 import WorkshopProfilePage from "./pages/workshop/WorkshopProfile";
 import WorkshopAppointments from "./pages/workshop/WorkshopAppointments";
+import WorkshopQuotes from "./pages/workshop/WorkshopQuotes";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -31,6 +32,7 @@ const App = () => (
           <Route path="/dashboard-oficina" element={<WorkshopDashboard />} />
           <Route path="/workshop/perfil" element={<WorkshopProfilePage />} />
           <Route path="/workshop/agendamentos" element={<WorkshopAppointments />} />
+          <Route path="/workshop/orcamentos" element={<WorkshopQuotes />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
