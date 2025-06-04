@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import Register from "./pages/Register";
 import Login from "./pages/Login";
 import WorkshopSearch from "./pages/WorkshopSearch";
+import WorkshopProfile from "./pages/WorkshopProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -23,6 +24,7 @@ const App = () => (
           <Route path="/cadastro" element={<Register />} />
           <Route path="/login" element={<Login />} />
           <Route path="/buscar-oficinas" element={<WorkshopSearch />} />
+          <Route path="/oficina/:id" element={<WorkshopProfile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
