@@ -1,5 +1,5 @@
-
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Dialog,
   DialogContent,
@@ -18,7 +18,8 @@ import {
   CheckCircle,
   AlertCircle,
   Wrench,
-  Search
+  Search,
+  FileText
 } from 'lucide-react';
 
 interface Appointment {
@@ -81,6 +82,7 @@ const AppointmentStatusModal = ({
 }: AppointmentStatusModalProps) => {
   const [selectedStatus, setSelectedStatus] = useState<string>('');
   const [statusNotes, setStatusNotes] = useState<string>('');
+  const navigate = useNavigate();
 
   const handleSave = () => {
     if (appointment && selectedStatus) {
@@ -95,6 +97,10 @@ const AppointmentStatusModal = ({
     onClose();
     setSelectedStatus('');
     setStatusNotes('');
+  };
+
+  const handleCreateQuote = () => {
+    navigate('/workshop/orcamentos/novo');
   };
 
   if (!appointment) return null;
@@ -186,6 +192,14 @@ const AppointmentStatusModal = ({
         <DialogFooter className="space-x-2">
           <Button variant="outline" onClick={handleClose}>
             Cancelar
+          </Button>
+          <Button 
+            variant="outline"
+            onClick={handleCreateQuote}
+            className="bg-green-50 text-green-700 border-green-200 hover:bg-green-100"
+          >
+            <FileText className="h-4 w-4 mr-1" />
+            Fazer Orçamento
           </Button>
           <Button 
             onClick={handleSave}
