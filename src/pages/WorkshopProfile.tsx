@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Star, MapPin, Clock, Phone, Shield, Zap, Calendar, Heart, Share2 } from 'lucide-react';
+import { ArrowLeft, Star, MapPin, Clock, Shield, Zap, Calendar, Heart, Share2, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
@@ -38,7 +38,58 @@ const WorkshopProfile = () => {
     workingDays: "Segunda a Sexta",
     workingHours: "08:00 às 18:00",
     saturday: "08:00 às 12:00",
-    certifications: ["ISO 9001", "Bosch Car Service", "Certificação Técnica"]
+    certifications: ["ISO 9001", "Bosch Car Service", "Certificação Técnica"],
+    customerReviews: [
+      {
+        id: 1,
+        name: "Carlos Silva",
+        rating: 5,
+        date: "15/11/2024",
+        comment: "Excelente atendimento! Fizeram a revisão do meu BMW e ficou perfeito. Recomendo muito!",
+        service: "Revisão Geral"
+      },
+      {
+        id: 2,
+        name: "Maria Santos",
+        rating: 5,
+        date: "10/11/2024",
+        comment: "Profissionais muito competentes. Resolveram o problema do ar condicionado rapidamente.",
+        service: "Ar Condicionado"
+      },
+      {
+        id: 3,
+        name: "João Oliveira",
+        rating: 4,
+        date: "08/11/2024",
+        comment: "Bom serviço, preço justo. Única observação é que demorou um pouco mais que o previsto.",
+        service: "Freios"
+      },
+      {
+        id: 4,
+        name: "Ana Costa",
+        rating: 5,
+        date: "05/11/2024",
+        comment: "Oficina de confiança! Sempre levo meu Mercedes aqui. Nunca tive problemas.",
+        service: "Troca de Óleo"
+      },
+      {
+        id: 5,
+        name: "Pedro Martins",
+        rating: 4,
+        date: "02/11/2024",
+        comment: "Bom trabalho na suspensão. Ficou muito melhor do que estava antes.",
+        service: "Suspensão"
+      }
+    ]
+  };
+
+  const renderStars = (rating: number) => {
+    return Array.from({ length: 5 }, (_, index) => (
+      <Star 
+        key={index} 
+        className={`h-4 w-4 ${index < rating ? 'fill-yellow-400 text-yellow-400' : 'text-gray-300'}`} 
+      />
+    ));
   };
 
   return (
@@ -132,12 +183,6 @@ const WorkshopProfile = () => {
                   <Calendar className="h-4 w-4 mr-2" />
                   Agendar Serviço
                 </Button>
-                <Button variant="outline" asChild>
-                  <a href={`tel:${workshop.phone}`}>
-                    <Phone className="h-4 w-4 mr-2" />
-                    Ligar
-                  </a>
-                </Button>
               </div>
             </div>
           </div>
@@ -184,6 +229,57 @@ const WorkshopProfile = () => {
                 </CardContent>
               </Card>
 
+              {/* Avaliações dos Clientes */}
+              <Card>
+                <CardContent className="p-6">
+                  <div className="flex items-center justify-between mb-6">
+                    <h2 className="text-xl font-semibold text-gray-900">Avaliações dos clientes</h2>
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-1">
+                        {renderStars(5)}
+                      </div>
+                      <span className="text-lg font-semibold text-gray-900">{workshop.rating}</span>
+                      <span className="text-gray-600">({workshop.reviews} avaliações)</span>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    {workshop.customerReviews.map((review) => (
+                      <div key={review.id} className="border-b border-gray-100 pb-4 last:border-b-0">
+                        <div className="flex items-start gap-4">
+                          <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                            <User className="h-5 w-5 text-blue-600" />
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center justify-between mb-2">
+                              <div>
+                                <h4 className="font-medium text-gray-900">{review.name}</h4>
+                                <div className="flex items-center gap-2">
+                                  <div className="flex items-center gap-1">
+                                    {renderStars(review.rating)}
+                                  </div>
+                                  <span className="text-sm text-gray-500">• {review.date}</span>
+                                </div>
+                              </div>
+                              <Badge variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                                {review.service}
+                              </Badge>
+                            </div>
+                            <p className="text-gray-600 text-sm leading-relaxed">{review.comment}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  <div className="mt-6 text-center">
+                    <Button variant="outline" className="w-full">
+                      Ver todas as avaliações
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+
               {/* Galeria */}
               <Card>
                 <CardContent className="p-6">
@@ -205,20 +301,11 @@ const WorkshopProfile = () => {
 
             {/* Sidebar */}
             <div className="space-y-6">
-              {/* Informações de contato */}
+              {/* Informações de localização */}
               <Card>
                 <CardContent className="p-6">
-                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Informações de contato</h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-4">Localização</h3>
                   <div className="space-y-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
-                        <Phone className="h-5 w-5 text-blue-600" />
-                      </div>
-                      <div>
-                        <p className="font-medium text-gray-900">{workshop.phone}</p>
-                        <p className="text-sm text-gray-600">WhatsApp disponível</p>
-                      </div>
-                    </div>
                     <div className="flex items-center gap-3">
                       <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
                         <MapPin className="h-5 w-5 text-green-600" />
@@ -226,6 +313,7 @@ const WorkshopProfile = () => {
                       <div>
                         <p className="font-medium text-gray-900">Endereço</p>
                         <p className="text-sm text-gray-600">{workshop.address}</p>
+                        <p className="text-sm text-blue-600 font-medium">{workshop.distance} de distância</p>
                       </div>
                     </div>
                   </div>
@@ -237,17 +325,17 @@ const WorkshopProfile = () => {
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Horário de funcionamento</h3>
                   <div className="space-y-3">
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">{workshop.workingDays}</span>
-                      <span className="font-medium text-gray-900">{workshop.workingHours}</span>
+                    <div className="flex justify-between items-center p-3 bg-green-50 rounded-lg border border-green-200">
+                      <span className="text-gray-700 font-medium">{workshop.workingDays}</span>
+                      <span className="font-semibold text-green-700">{workshop.workingHours}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Sábado</span>
-                      <span className="font-medium text-gray-900">{workshop.saturday}</span>
+                    <div className="flex justify-between items-center p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <span className="text-gray-700 font-medium">Sábado</span>
+                      <span className="font-semibold text-blue-700">{workshop.saturday}</span>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-gray-600">Domingo</span>
-                      <span className="font-medium text-gray-900">Fechado</span>
+                    <div className="flex justify-between items-center p-3 bg-gray-50 rounded-lg border border-gray-200">
+                      <span className="text-gray-700 font-medium">Domingo</span>
+                      <span className="font-semibold text-red-600">Fechado</span>
                     </div>
                   </div>
                 </CardContent>
@@ -257,11 +345,11 @@ const WorkshopProfile = () => {
               <Card>
                 <CardContent className="p-6">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">Certificações</h3>
-                  <div className="space-y-2">
+                  <div className="space-y-3">
                     {workshop.certifications.map((cert) => (
-                      <div key={cert} className="flex items-center gap-2">
-                        <Shield className="h-4 w-4 text-green-500" />
-                        <span className="text-sm text-gray-600">{cert}</span>
+                      <div key={cert} className="flex items-center gap-3 p-3 bg-blue-50 rounded-lg border border-blue-200">
+                        <Shield className="h-5 w-5 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-700">{cert}</span>
                       </div>
                     ))}
                   </div>
