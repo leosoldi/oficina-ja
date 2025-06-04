@@ -3,10 +3,15 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, ChevronDown, Star, Users, Award, MapPin } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { useNavigate } from 'react-router-dom';
+
 const HeroSection = () => {
+  const navigate = useNavigate();
   const [selectedService, setSelectedService] = React.useState('Selecione o serviço');
   const [location, setLocation] = React.useState('');
+  
   const services = ['Revisão Geral', 'Troca de Óleo', 'Freios', 'Suspensão', 'Ar Condicionado', 'Elétrica', 'Pneus e Alinhamento', 'Motor', 'Funilaria e Pintura'];
+  
   const stats = [{
     icon: Users,
     value: '10K+',
@@ -20,6 +25,15 @@ const HeroSection = () => {
     value: '4.8',
     label: 'Avaliação'
   }];
+
+  const handleSearch = () => {
+    const searchParams = new URLSearchParams();
+    if (location) searchParams.set('location', location);
+    if (selectedService !== 'Selecione o serviço') searchParams.set('service', selectedService);
+    
+    navigate(`/buscar-oficinas?${searchParams.toString()}`);
+  };
+
   return <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 md:py-20 lg:py-32 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
@@ -116,7 +130,11 @@ const HeroSection = () => {
                 </div>
 
                 {/* Botão de Busca - Touch friendly */}
-                <Button size="lg" className="w-full h-12 md:h-12 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 mt-4 md:mt-6 text-base touch-target">
+                <Button 
+                  size="lg" 
+                  onClick={handleSearch}
+                  className="w-full h-12 md:h-12 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded-xl flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300 mt-4 md:mt-6 text-base touch-target"
+                >
                   <Search className="h-5 w-5" />
                   Buscar Oficinas
                 </Button>
@@ -135,4 +153,5 @@ const HeroSection = () => {
       </div>
     </section>;
 };
+
 export default HeroSection;
