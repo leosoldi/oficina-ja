@@ -13,6 +13,7 @@ import WorkshopDashboard from "./pages/WorkshopDashboard";
 import WorkshopProfilePage from "./pages/workshop/WorkshopProfile";
 import WorkshopAppointments from "./pages/workshop/WorkshopAppointments";
 import WorkshopQuotes from "./pages/workshop/WorkshopQuotes";
+import WorkshopChecklists from "./pages/workshop/WorkshopChecklists";
 import NewQuote from "./pages/workshop/NewQuote";
 import EditQuote from "./pages/workshop/EditQuote";
 import NotFound from "./pages/NotFound";
@@ -35,6 +36,7 @@ const App = () => (
           <Route path="/workshop/perfil" element={<WorkshopProfilePage />} />
           <Route path="/workshop/agendamentos" element={<WorkshopAppointments />} />
           <Route path="/workshop/orcamentos" element={<WorkshopQuotes />} />
+          <Route path="/workshop/checklists" element={<WorkshopChecklists />} />
           <Route path="/workshop/orcamentos/novo" element={<NewQuote />} />
           <Route path="/workshop/orcamentos/editar/:id" element={<EditQuote />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
