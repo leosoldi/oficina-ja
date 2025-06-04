@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Star, MapPin, Clock, Phone, Heart, Shield, Zap } from 'lucide-react';
+import { Star, MapPin, Clock, Heart, Shield, Zap, Calendar } from 'lucide-react';
 
 interface Workshop {
   id: number;
@@ -154,8 +154,9 @@ const WorkshopCard = ({ workshop, index, favorites, toggleFavorite }: WorkshopCa
               Ver Perfil
             </Link>
           </Button>
-          <Button variant="outline" size="icon" className="hover:bg-green-50 hover:border-green-300 hover:scale-110 transition-all duration-300">
-            <Phone className="h-4 w-4 text-green-600" />
+          <Button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+            <Calendar className="h-4 w-4 mr-2" />
+            Agenda Já
           </Button>
         </div>
       </CardContent>
