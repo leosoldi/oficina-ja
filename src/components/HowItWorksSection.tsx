@@ -1,40 +1,31 @@
-
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Search, Calendar, Wrench, Star, ArrowRight } from 'lucide-react';
-
 const HowItWorksSection = () => {
-  const steps = [
-    {
-      number: "01",
-      icon: Search,
-      title: "Encontre Oficinas",
-      description: "Pesquise oficinas próximas a você com base em localização e avaliações de outros usuários."
-    },
-    {
-      number: "02", 
-      icon: Calendar,
-      title: "Agende Serviços",
-      description: "Escolha a data e horário que melhor se adequa à sua agenda e agende o serviço desejado."
-    },
-    {
-      number: "03",
-      icon: Wrench,
-      title: "Acompanhe o Progresso",
-      description: "Monitore em tempo real o andamento do seu serviço e receba notificações de status."
-    },
-    {
-      number: "04",
-      icon: Star,
-      title: "Avalie o Serviço",
-      description: "Após a conclusão, avalie a oficina e ajude outros motoristas a fazer boas escolhas."
-    }
-  ];
-
-  return (
-    <section id="como-funciona" className="py-20 lg:py-32 bg-white relative overflow-hidden">
+  const steps = [{
+    number: "01",
+    icon: Search,
+    title: "Encontre Oficinas",
+    description: "Pesquise oficinas próximas a você com base em localização e avaliações de outros usuários."
+  }, {
+    number: "02",
+    icon: Calendar,
+    title: "Agende Serviços",
+    description: "Escolha a data e horário que melhor se adequa à sua agenda e agende o serviço desejado."
+  }, {
+    number: "03",
+    icon: Wrench,
+    title: "Acompanhe o Progresso",
+    description: "Monitore em tempo real o andamento do seu serviço e receba notificações de status."
+  }, {
+    number: "04",
+    icon: Star,
+    title: "Avalie o Serviço",
+    description: "Após a conclusão, avalie a oficina e ajude outros motoristas a fazer boas escolhas."
+  }];
+  return <section id="como-funciona" className="py-20 lg:py-32 bg-white relative overflow-hidden">
       {/* Background decorative elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 py-0">
         <div className="absolute top-1/4 left-1/4 w-72 h-72 bg-blue-100/50 rounded-full blur-3xl"></div>
         <div className="absolute bottom-1/4 right-1/4 w-72 h-72 bg-orange-100/50 rounded-full blur-3xl"></div>
       </div>
@@ -57,8 +48,9 @@ const HowItWorksSection = () => {
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
-          {steps.map((step, index) => (
-            <div key={index} className="relative animate-fade-in" style={{ animationDelay: `${index * 0.2}s` }}>
+          {steps.map((step, index) => <div key={index} className="relative animate-fade-in" style={{
+          animationDelay: `${index * 0.2}s`
+        }}>
               <Card className="relative border-2 border-gray-100 hover:border-orange-300 transition-all duration-500 group hover:shadow-2xl hover:-translate-y-2 bg-white overflow-hidden">
                 <CardContent className="p-8 text-center relative">
                   {/* Background gradient */}
@@ -87,17 +79,16 @@ const HowItWorksSection = () => {
               </Card>
               
               {/* Arrow between steps */}
-              {index < steps.length - 1 && (
-                <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
+              {index < steps.length - 1 && <div className="hidden lg:block absolute top-1/2 -right-4 transform -translate-y-1/2 z-10">
                   <ArrowRight className="h-6 w-6 text-gray-300" />
-                </div>
-              )}
-            </div>
-          ))}
+                </div>}
+            </div>)}
         </div>
 
         {/* CTA Section */}
-        <div className="text-center animate-fade-in" style={{ animationDelay: '0.8s' }}>
+        <div className="text-center animate-fade-in" style={{
+        animationDelay: '0.8s'
+      }}>
           <div className="bg-gradient-to-r from-blue-900 via-blue-800 to-blue-700 rounded-3xl p-8 lg:p-16 relative overflow-hidden">
             {/* Background effects */}
             <div className="absolute inset-0 bg-gradient-to-r from-orange-500/10 to-transparent"></div>
@@ -124,8 +115,6 @@ const HowItWorksSection = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default HowItWorksSection;
