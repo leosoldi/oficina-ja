@@ -98,50 +98,58 @@ const WorkshopDashboard = () => {
 
         {/* Stats Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <Card className="bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0">
+          <Card className="bg-white border border-blue-200 shadow-lg hover:shadow-xl transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-blue-100 text-sm font-medium">Agendamentos Hoje</p>
-                  <p className="text-3xl font-bold">12</p>
+                  <p className="text-blue-600 text-sm font-medium">Agendamentos Hoje</p>
+                  <p className="text-3xl font-bold text-gray-900">12</p>
                 </div>
-                <Calendar className="h-10 w-10 text-blue-200" />
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                  <Calendar className="h-6 w-6 text-blue-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-orange-500 to-orange-600 text-white border-0">
+          <Card className="bg-white border border-orange-200 shadow-lg hover:shadow-xl transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-orange-100 text-sm font-medium">Receita Mensal</p>
-                  <p className="text-3xl font-bold">R$ 45.2k</p>
+                  <p className="text-orange-600 text-sm font-medium">Receita Mensal</p>
+                  <p className="text-3xl font-bold text-gray-900">R$ 45.2k</p>
                 </div>
-                <DollarSign className="h-10 w-10 text-orange-200" />
+                <div className="w-12 h-12 bg-orange-100 rounded-lg flex items-center justify-center">
+                  <DollarSign className="h-6 w-6 text-orange-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-green-500 to-green-600 text-white border-0">
+          <Card className="bg-white border border-green-200 shadow-lg hover:shadow-xl transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-green-100 text-sm font-medium">Avaliação Média</p>
-                  <p className="text-3xl font-bold">4.8</p>
+                  <p className="text-green-600 text-sm font-medium">Avaliação Média</p>
+                  <p className="text-3xl font-bold text-gray-900">4.8</p>
                 </div>
-                <Star className="h-10 w-10 text-green-200" />
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                  <Star className="h-6 w-6 text-green-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
 
-          <Card className="bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0">
+          <Card className="bg-white border border-purple-200 shadow-lg hover:shadow-xl transition-shadow">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-purple-100 text-sm font-medium">Clientes Ativos</p>
-                  <p className="text-3xl font-bold">156</p>
+                  <p className="text-purple-600 text-sm font-medium">Clientes Ativos</p>
+                  <p className="text-3xl font-bold text-gray-900">156</p>
                 </div>
-                <Users className="h-10 w-10 text-purple-200" />
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                  <Users className="h-6 w-6 text-purple-600" />
+                </div>
               </div>
             </CardContent>
           </Card>
