@@ -152,10 +152,12 @@ const WorkshopQuotes = () => {
             </div>
             
             <div className="flex items-center space-x-4">
-              <Button>
-                <Plus className="h-4 w-4 mr-2" />
-                Novo Orçamento
-              </Button>
+              <Link to="/workshop/orcamentos/novo">
+                <Button>
+                  <Plus className="h-4 w-4 mr-2" />
+                  Novo Orçamento
+                </Button>
+              </Link>
             </div>
           </div>
         </div>
@@ -329,9 +331,11 @@ const WorkshopQuotes = () => {
                       <Button variant="outline" size="sm">
                         <Eye className="h-4 w-4" />
                       </Button>
-                      <Button variant="outline" size="sm">
-                        <Edit className="h-4 w-4" />
-                      </Button>
+                      <Link to={`/workshop/orcamentos/editar/${quote.id}`}>
+                        <Button variant="outline" size="sm">
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                      </Link>
                       <Button variant="outline" size="sm">
                         <Download className="h-4 w-4" />
                       </Button>

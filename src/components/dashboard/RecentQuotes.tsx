@@ -36,7 +36,7 @@ const RecentQuotes = () => {
       <CardHeader className="pb-4">
         <div className="flex items-center justify-between">
           <CardTitle className="text-lg font-semibold text-gray-900">Orçamentos Recentes</CardTitle>
-          <Link to="/workshop/orcamentos">
+          <Link to="/workshop/orcamentos/novo">
             <Button variant="outline" size="sm">
               <Plus className="h-4 w-4 mr-2" />
               Novo orçamento
