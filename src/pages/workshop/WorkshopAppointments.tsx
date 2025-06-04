@@ -1,23 +1,10 @@
 
 import React, { useState } from 'react';
+import { Appointment } from '@/types/appointment';
 import AppointmentHeader from '@/components/appointments/AppointmentHeader';
 import AppointmentStats from '@/components/appointments/AppointmentStats';
 import AppointmentCalendar from '@/components/appointments/AppointmentCalendar';
 import AppointmentList from '@/components/appointments/AppointmentList';
-
-interface Appointment {
-  id: number;
-  time: string;
-  duration: string;
-  client: string;
-  phone: string;
-  email: string;
-  vehicle: string;
-  plate: string;
-  service: string;
-  status: string;
-  notes: string;
-}
 
 const WorkshopAppointments = () => {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());

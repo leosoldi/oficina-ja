@@ -11,21 +11,8 @@ import {
   Edit,
   CheckCircle
 } from 'lucide-react';
+import { Appointment } from '@/types/appointment';
 import AppointmentStatusModal from './AppointmentStatusModal';
-
-interface Appointment {
-  id: number;
-  time: string;
-  duration: string;
-  client: string;
-  phone: string;
-  email: string;
-  vehicle: string;
-  plate: string;
-  service: string;
-  status: string;
-  notes: string;
-}
 
 interface AppointmentCardProps {
   appointment: Appointment;
@@ -45,7 +32,6 @@ const AppointmentCard = ({
   const handleUpdateStatus = (appointmentId: number, newStatus: string, statusNotes: string) => {
     console.log('Updating appointment status:', { appointmentId, newStatus, statusNotes });
     
-    // Atualizar o appointment com o novo status
     const updatedAppointment = {
       ...appointment,
       status: newStatus,
