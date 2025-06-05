@@ -16,6 +16,8 @@ import WorkshopQuotes from "./pages/workshop/WorkshopQuotes";
 import NewQuote from "./pages/workshop/NewQuote";
 import EditQuote from "./pages/workshop/EditQuote";
 import WorkshopChecklists from "./pages/workshop/WorkshopChecklists";
+import DriverDashboard from "./pages/DriverDashboard";
+import DriverProfile from "./pages/driver/DriverProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -33,12 +35,14 @@ const App = () => (
           <Route path="/buscar-oficinas" element={<WorkshopSearch />} />
           <Route path="/oficina/:id" element={<WorkshopProfile />} />
           <Route path="/dashboard-oficina" element={<WorkshopDashboard />} />
+          <Route path="/dashboard-motorista" element={<DriverDashboard />} />
           <Route path="/workshop/perfil" element={<WorkshopProfilePage />} />
           <Route path="/workshop/agendamentos" element={<WorkshopAppointments />} />
           <Route path="/workshop/orcamentos" element={<WorkshopQuotes />} />
           <Route path="/workshop/orcamentos/novo" element={<NewQuote />} />
           <Route path="/workshop/orcamentos/editar/:id" element={<EditQuote />} />
           <Route path="/workshop/checklists" element={<WorkshopChecklists />} />
+          <Route path="/driver/perfil" element={<DriverProfile />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
