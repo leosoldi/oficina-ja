@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -25,6 +26,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DriverHeader from '@/components/DriverHeader';
+import MobileBottomNav from '@/components/MobileBottomNav';
 import { Vehicle } from '@/types/vehicle';
 
 interface MaintenanceRecord {
@@ -271,7 +273,7 @@ const DriverVehicles = () => {
             Editar
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-md">
+        <DialogContent className="max-w-md mx-4">
           <DialogHeader>
             <DialogTitle className="flex items-center space-x-2">
               <Edit className="h-5 w-5" />
@@ -341,7 +343,7 @@ const DriverVehicles = () => {
 
             <div>
               <Label htmlFor="fuelType">Tipo de Combustível</Label>
-              <Select value={editData.fuelType} onValueChange={(value) => setEditData({...editData, fuelType: value})}>
+              <Select value={editData.fuelType} onValueChange={(value: Vehicle['fuelType']) => setEditData({...editData, fuelType: value})}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -481,64 +483,65 @@ const DriverVehicles = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50 pb-20 md:pb-8">
       <DriverHeader />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
         {/* Header Section */}
-        <div className="mb-8 animate-fade-in">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-6 md:p-8 shadow-xl border border-white/20">
-            <div className="flex items-center justify-between mb-4">
+        <div className="mb-6 md:mb-8 animate-fade-in">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-4 md:p-6 lg:p-8 shadow-xl border border-white/20">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-4 space-y-4 sm:space-y-0">
               <div>
-                <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
+                <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900 mb-2">
                   Meus Veículos 🚗
                 </h1>
-                <p className="text-gray-600">Gerencie seus veículos e acompanhe a manutenção</p>
+                <p className="text-sm md:text-base text-gray-600">Gerencie seus veículos e acompanhe a manutenção</p>
               </div>
               <Link to="/driver/adicionar-veiculo">
-                <Button className="bg-blue-600 hover:bg-blue-700">
+                <Button className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto">
                   <Plus className="h-4 w-4 mr-2" />
-                  Adicionar Veículo
+                  <span className="hidden sm:inline">Adicionar Veículo</span>
+                  <span className="sm:hidden">Adicionar</span>
                 </Button>
               </Link>
             </div>
             
             {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 md:gap-4">
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-3 md:p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-blue-500 rounded-lg flex items-center justify-center">
-                    <Car className="h-5 w-5 text-white" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-blue-500 rounded-lg flex items-center justify-center">
+                    <Car className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Total de Veículos</p>
-                    <p className="text-xl font-bold text-gray-900">{vehicles.length}</p>
+                    <p className="text-xs md:text-sm text-gray-600">Total de Veículos</p>
+                    <p className="text-lg md:text-xl font-bold text-gray-900">{vehicles.length}</p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-4">
+              <div className="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-3 md:p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-green-500 rounded-lg flex items-center justify-center">
-                    <CheckCircle className="h-5 w-5 text-white" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-green-500 rounded-lg flex items-center justify-center">
+                    <CheckCircle className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Veículos Ativos</p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-xs md:text-sm text-gray-600">Veículos Ativos</p>
+                    <p className="text-lg md:text-xl font-bold text-gray-900">
                       {vehicles.filter(v => v.status === 'active').length}
                     </p>
                   </div>
                 </div>
               </div>
               
-              <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl p-4">
+              <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 rounded-xl p-3 md:p-4">
                 <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
-                    <AlertTriangle className="h-5 w-5 text-white" />
+                  <div className="w-8 h-8 md:w-10 md:h-10 bg-yellow-500 rounded-lg flex items-center justify-center">
+                    <AlertTriangle className="h-4 w-4 md:h-5 md:w-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-sm text-gray-600">Manutenção Próxima</p>
-                    <p className="text-xl font-bold text-gray-900">
+                    <p className="text-xs md:text-sm text-gray-600">Manutenção Próxima</p>
+                    <p className="text-lg md:text-xl font-bold text-gray-900">
                       {vehicles.filter(v => isMaintenanceDue(v.nextMaintenance)).length}
                     </p>
                   </div>
@@ -549,22 +552,22 @@ const DriverVehicles = () => {
         </div>
 
         {/* Vehicles Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 md:gap-6 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           {vehicles.map((vehicle) => {
             const docStatus = getDocumentStatus(vehicle.documents);
             const maintenanceDue = isMaintenanceDue(vehicle.nextMaintenance);
             
             return (
               <Card key={vehicle.id} className="bg-white/80 backdrop-blur-sm border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1">
-                <CardHeader className="pb-4">
+                <CardHeader className="pb-3 md:pb-4">
                   <div className="flex items-start justify-between">
                     <div className="flex items-center space-x-3">
-                      <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <Car className="h-6 w-6 text-blue-600" />
+                      <div className="w-10 h-10 md:w-12 md:h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <Car className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
                       </div>
                       <div>
-                        <CardTitle className="text-lg">{vehicle.brand} {vehicle.model}</CardTitle>
-                        <p className="text-sm text-gray-600">{vehicle.year} • {vehicle.plate}</p>
+                        <CardTitle className="text-base md:text-lg">{vehicle.brand} {vehicle.model}</CardTitle>
+                        <p className="text-xs md:text-sm text-gray-600">{vehicle.year} • {vehicle.plate}</p>
                       </div>
                     </div>
                     <Badge className={getStatusColor(vehicle.status)}>
@@ -573,34 +576,34 @@ const DriverVehicles = () => {
                   </div>
                 </CardHeader>
 
-                <CardContent className="space-y-4">
+                <CardContent className="space-y-3 md:space-y-4">
                   {/* Vehicle Details */}
-                  <div className="grid grid-cols-2 gap-4 text-sm">
+                  <div className="grid grid-cols-2 gap-3 md:gap-4 text-xs md:text-sm">
                     <div className="flex items-center space-x-2">
                       <div className="w-2 h-2 rounded-full" style={{ backgroundColor: vehicle.color.toLowerCase() === 'prata' ? '#C0C0C0' : vehicle.color.toLowerCase() === 'branco' ? '#FFFFFF' : vehicle.color.toLowerCase() === 'azul' ? '#0000FF' : '#000000' }}></div>
                       <span className="text-gray-600">{vehicle.color}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                      <Fuel className="h-4 w-4 text-gray-400" />
+                      <Fuel className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
                       <span className="text-gray-600">{getFuelTypeText(vehicle.fuelType)}</span>
                     </div>
                   </div>
 
-                  <div className="text-sm">
+                  <div className="text-xs md:text-sm">
                     <div className="flex items-center space-x-2 mb-1">
-                      <Car className="h-4 w-4 text-gray-400" />
+                      <Car className="h-3 w-3 md:h-4 md:w-4 text-gray-400" />
                       <span className="text-gray-600">{vehicle.mileage.toLocaleString('pt-BR')} km</span>
                     </div>
                   </div>
 
                   {/* Maintenance Info */}
                   {vehicle.nextMaintenance && (
-                    <div className={`p-3 rounded-lg ${maintenanceDue ? 'bg-yellow-50 border border-yellow-200' : 'bg-gray-50'}`}>
+                    <div className={`p-2 md:p-3 rounded-lg ${maintenanceDue ? 'bg-yellow-50 border border-yellow-200' : 'bg-gray-50'}`}>
                       <div className="flex items-center space-x-2 mb-1">
-                        <Wrench className={`h-4 w-4 ${maintenanceDue ? 'text-yellow-600' : 'text-gray-400'}`} />
-                        <span className="text-sm font-medium text-gray-700">Próxima Revisão</span>
+                        <Wrench className={`h-3 w-3 md:h-4 md:w-4 ${maintenanceDue ? 'text-yellow-600' : 'text-gray-400'}`} />
+                        <span className="text-xs md:text-sm font-medium text-gray-700">Próxima Revisão</span>
                       </div>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-xs md:text-sm text-gray-600">
                         {new Date(vehicle.nextMaintenance).toLocaleDateString('pt-BR')}
                       </p>
                       {maintenanceDue && (
@@ -610,30 +613,30 @@ const DriverVehicles = () => {
                   )}
 
                   {/* Documents Status */}
-                  <div className="p-3 bg-gray-50 rounded-lg">
+                  <div className="p-2 md:p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-sm font-medium text-gray-700">Documentos</span>
-                      <span className="text-sm text-gray-600">{docStatus.valid}/{docStatus.total}</span>
+                      <span className="text-xs md:text-sm font-medium text-gray-700">Documentos</span>
+                      <span className="text-xs md:text-sm text-gray-600">{docStatus.valid}/{docStatus.total}</span>
                     </div>
                     <div className="flex space-x-1 mb-2">
                       <div className={`flex-1 h-2 rounded-full ${vehicle.documents.registration ? 'bg-green-500' : 'bg-gray-200'}`}></div>
                       <div className={`flex-1 h-2 rounded-full ${vehicle.documents.insurance ? 'bg-green-500' : 'bg-gray-200'}`}></div>
                       <div className={`flex-1 h-2 rounded-full ${vehicle.documents.inspection ? 'bg-green-500' : 'bg-gray-200'}`}></div>
                     </div>
-                    <div className="flex items-center space-x-4 text-xs text-gray-600">
-                      <div className="flex items-center space-x-1">
+                    <div className="grid grid-cols-3 gap-2 text-xs text-gray-600">
+                      <div className="flex flex-col items-center space-y-1">
                         <FileText className="h-3 w-3" />
-                        <span>CRLV</span>
+                        <span className="text-center">CRLV</span>
                         {vehicle.documents.registration && <CheckCircle className="h-3 w-3 text-green-500" />}
                       </div>
-                      <div className="flex items-center space-x-1">
+                      <div className="flex flex-col items-center space-y-1">
                         <Shield className="h-3 w-3" />
-                        <span>Seguro</span>
+                        <span className="text-center">Seguro</span>
                         {vehicle.documents.insurance && <CheckCircle className="h-3 w-3 text-green-500" />}
                       </div>
-                      <div className="flex items-center space-x-1">
+                      <div className="flex flex-col items-center space-y-1">
                         <Calendar className="h-3 w-3" />
-                        <span>Vistoria</span>
+                        <span className="text-center">Vistoria</span>
                         {vehicle.documents.inspection && <CheckCircle className="h-3 w-3 text-green-500" />}
                       </div>
                     </div>
@@ -652,12 +655,12 @@ const DriverVehicles = () => {
 
         {/* Empty State */}
         {vehicles.length === 0 && (
-          <div className="text-center py-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
-              <Car className="h-12 w-12 text-gray-400" />
+          <div className="text-center py-8 md:py-12 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+            <div className="w-16 h-16 md:w-24 md:h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <Car className="h-8 w-8 md:h-12 md:w-12 text-gray-400" />
             </div>
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">Nenhum veículo cadastrado</h3>
-            <p className="text-gray-600 mb-6">Adicione seu primeiro veículo para começar</p>
+            <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2">Nenhum veículo cadastrado</h3>
+            <p className="text-sm md:text-base text-gray-600 mb-6">Adicione seu primeiro veículo para começar</p>
             <Link to="/driver/adicionar-veiculo">
               <Button className="bg-blue-600 hover:bg-blue-700">
                 <Plus className="h-4 w-4 mr-2" />
@@ -667,6 +670,8 @@ const DriverVehicles = () => {
           </div>
         )}
       </div>
+      
+      <MobileBottomNav />
     </div>
   );
 };
