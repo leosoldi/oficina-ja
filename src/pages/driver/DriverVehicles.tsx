@@ -1,8 +1,8 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
 import { 
   Car, 
   Plus, 
@@ -15,11 +15,30 @@ import {
   Edit,
   Trash2,
   AlertTriangle,
-  CheckCircle
+  CheckCircle,
+  History,
+  Clock,
+  MapPin
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DriverHeader from '@/components/DriverHeader';
 import { Vehicle } from '@/types/vehicle';
+
+interface MaintenanceRecord {
+  id: string;
+  date: string;
+  workshop: string;
+  location: string;
+  type: 'maintenance' | 'repair' | 'inspection';
+  services: string[];
+  parts: Array<{
+    name: string;
+    quantity: number;
+    price: number;
+  }>;
+  totalCost: number;
+  description: string;
+}
 
 const DriverVehicles = () => {
   const [vehicles] = useState<Vehicle[]>([
@@ -82,6 +101,73 @@ const DriverVehicles = () => {
     }
   ]);
 
+  const [maintenanceHistory] = useState<Record<string, MaintenanceRecord[]>>({
+    '1': [
+      {
+        id: 'maint-1',
+        date: '2024-04-15',
+        workshop: 'Auto Center Silva',
+        location: 'São Paulo, SP',
+        type: 'maintenance',
+        services: ['Troca de óleo', 'Filtro de ar', 'Revisão geral'],
+        parts: [
+          { name: 'Óleo motor 5W30', quantity: 4, price: 35.00 },
+          { name: 'Filtro de ar', quantity: 1, price: 25.00 },
+          { name: 'Filtro de óleo', quantity: 1, price: 15.00 }
+        ],
+        totalCost: 320.00,
+        description: 'Revisão dos 45.000km conforme manual do fabricante'
+      },
+      {
+        id: 'maint-2',
+        date: '2024-01-20',
+        workshop: 'Oficina Central',
+        location: 'São Paulo, SP',
+        type: 'repair',
+        services: ['Troca de pastilhas de freio', 'Alinhamento'],
+        parts: [
+          { name: 'Pastilhas de freio dianteiras', quantity: 1, price: 80.00 },
+          { name: 'Pastilhas de freio traseiras', quantity: 1, price: 60.00 }
+        ],
+        totalCost: 280.00,
+        description: 'Substituição de pastilhas devido ao desgaste'
+      }
+    ],
+    '2': [
+      {
+        id: 'maint-3',
+        date: '2024-05-20',
+        workshop: 'Toyota Autorizada',
+        location: 'São Paulo, SP',
+        type: 'maintenance',
+        services: ['Revisão completa', 'Troca de correia dentada'],
+        parts: [
+          { name: 'Correia dentada', quantity: 1, price: 120.00 },
+          { name: 'Tensor da correia', quantity: 1, price: 45.00 },
+          { name: 'Bomba d\'água', quantity: 1, price: 85.00 }
+        ],
+        totalCost: 450.00,
+        description: 'Revisão dos 78.000km com substituição preventiva da correia dentada'
+      }
+    ],
+    '3': [
+      {
+        id: 'maint-4',
+        date: '2024-03-10',
+        workshop: 'VW Service',
+        location: 'São Paulo, SP',
+        type: 'repair',
+        services: ['Reparo no sistema elétrico', 'Substituição de alternador'],
+        parts: [
+          { name: 'Alternador', quantity: 1, price: 280.00 },
+          { name: 'Cabo de bateria', quantity: 1, price: 35.00 }
+        ],
+        totalCost: 450.00,
+        description: 'Problema no sistema de carga da bateria'
+      }
+    ]
+  });
+
   const getStatusColor = (status: string) => {
     switch (status) {
       case 'active': return 'bg-green-100 text-green-800';
@@ -125,6 +211,137 @@ const DriverVehicles = () => {
     const diffTime = maintenanceDate.getTime() - today.getTime();
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     return diffDays <= 30;
+  };
+
+  const getMaintenanceTypeColor = (type: MaintenanceRecord['type']) => {
+    switch (type) {
+      case 'maintenance': return 'bg-blue-100 text-blue-800';
+      case 'repair': return 'bg-orange-100 text-orange-800';
+      case 'inspection': return 'bg-green-100 text-green-800';
+      default: return 'bg-gray-100 text-gray-800';
+    }
+  };
+
+  const getMaintenanceTypeText = (type: MaintenanceRecord['type']) => {
+    switch (type) {
+      case 'maintenance': return 'Manutenção';
+      case 'repair': return 'Reparo';
+      case 'inspection': return 'Vistoria';
+      default: return type;
+    }
+  };
+
+  const MaintenanceHistoryDialog = ({ vehicle }: { vehicle: Vehicle }) => {
+    const history = maintenanceHistory[vehicle.id] || [];
+
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline" size="sm" className="flex-1">
+            <History className="h-4 w-4 mr-2" />
+            Histórico
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
+          <DialogHeader>
+            <DialogTitle className="flex items-center space-x-2">
+              <History className="h-5 w-5" />
+              <span>Histórico de Manutenção - {vehicle.brand} {vehicle.model}</span>
+            </DialogTitle>
+          </DialogHeader>
+          
+          <div className="space-y-4">
+            {history.length === 0 ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <History className="h-8 w-8 text-gray-400" />
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">Nenhum histórico encontrado</h3>
+                <p className="text-gray-600">Este veículo ainda não possui registros de manutenção</p>
+              </div>
+            ) : (
+              history.map((record) => (
+                <Card key={record.id} className="border-0 shadow-md">
+                  <CardHeader className="pb-3">
+                    <div className="flex items-start justify-between">
+                      <div className="flex items-center space-x-3">
+                        <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                          <Wrench className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <div className="flex items-center space-x-2 mb-1">
+                            <h4 className="font-semibold text-gray-900">{record.workshop}</h4>
+                            <Badge className={getMaintenanceTypeColor(record.type)}>
+                              {getMaintenanceTypeText(record.type)}
+                            </Badge>
+                          </div>
+                          <div className="flex items-center space-x-4 text-sm text-gray-600">
+                            <div className="flex items-center space-x-1">
+                              <Clock className="h-4 w-4" />
+                              <span>{new Date(record.date).toLocaleDateString('pt-BR')}</span>
+                            </div>
+                            <div className="flex items-center space-x-1">
+                              <MapPin className="h-4 w-4" />
+                              <span>{record.location}</span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="text-lg font-bold text-gray-900">
+                          R$ {record.totalCost.toFixed(2).replace('.', ',')}
+                        </p>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  
+                  <CardContent className="space-y-4">
+                    <p className="text-gray-700">{record.description}</p>
+                    
+                    {/* Services */}
+                    <div>
+                      <h5 className="font-medium text-gray-900 mb-2">Serviços Realizados</h5>
+                      <div className="flex flex-wrap gap-2">
+                        {record.services.map((service, index) => (
+                          <Badge key={index} variant="secondary" className="text-xs">
+                            {service}
+                          </Badge>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Parts */}
+                    {record.parts.length > 0 && (
+                      <div>
+                        <h5 className="font-medium text-gray-900 mb-3">Peças Utilizadas</h5>
+                        <div className="space-y-2">
+                          {record.parts.map((part, index) => (
+                            <div key={index} className="flex items-center justify-between p-2 bg-gray-50 rounded-lg">
+                              <div className="flex-1">
+                                <p className="font-medium text-gray-900">{part.name}</p>
+                                <p className="text-sm text-gray-600">Quantidade: {part.quantity}</p>
+                              </div>
+                              <div className="text-right">
+                                <p className="font-medium text-gray-900">
+                                  R$ {(part.price * part.quantity).toFixed(2).replace('.', ',')}
+                                </p>
+                                <p className="text-xs text-gray-600">
+                                  R$ {part.price.toFixed(2).replace('.', ',')} cada
+                                </p>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
+        </DialogContent>
+      </Dialog>
+    );
   };
 
   return (
@@ -290,10 +507,7 @@ const DriverVehicles = () => {
                       <Edit className="h-4 w-4 mr-2" />
                       Editar
                     </Button>
-                    <Button variant="outline" size="sm" className="flex-1">
-                      <Settings className="h-4 w-4 mr-2" />
-                      Detalhes
-                    </Button>
+                    <MaintenanceHistoryDialog vehicle={vehicle} />
                   </div>
                 </CardContent>
               </Card>
