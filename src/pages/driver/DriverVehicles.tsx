@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -341,7 +342,7 @@ const DriverVehicles = () => {
 
             <div>
               <Label htmlFor="fuelType">Tipo de Combustível</Label>
-              <Select value={editData.fuelType} onValueChange={(value) => setEditData({...editData, fuelType: value})}>
+              <Select value={editData.fuelType} onValueChange={(value: Vehicle['fuelType']) => setEditData({...editData, fuelType: value})}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
