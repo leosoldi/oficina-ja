@@ -50,6 +50,9 @@ const DriverHeader = () => {
             <Link to="/driver/agendamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Meus Agendamentos
             </Link>
+            <Link to="/driver/orcamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Meus Orçamentos
+            </Link>
             <Link to="/driver/veiculos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Meus Veículos
             </Link>
@@ -108,6 +111,14 @@ const DriverHeader = () => {
               >
                 <Car className="h-5 w-5 mr-3" />
                 Meus Agendamentos
+              </Link>
+              <Link 
+                to="/driver/orcamentos" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Car className="h-5 w-5 mr-3" />
+                Meus Orçamentos
               </Link>
               <Link 
                 to="/driver/veiculos" 

@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -65,18 +64,18 @@ const DriverDashboard = () => {
       color: 'bg-green-500'
     },
     {
+      title: 'Meus Orçamentos',
+      description: 'Visualize e aprove orçamentos',
+      icon: FileText,
+      href: '/driver/orcamentos',
+      color: 'bg-purple-500'
+    },
+    {
       title: 'Meus Veículos',
       description: 'Gerencie seus veículos',
       icon: Car,
       href: '/driver/veiculos',
       color: 'bg-orange-500'
-    },
-    {
-      title: 'Histórico',
-      description: 'Veja seus serviços anteriores',
-      icon: FileText,
-      href: '/driver/historico',
-      color: 'bg-purple-500'
     }
   ];
 
