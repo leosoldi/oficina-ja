@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -19,6 +20,7 @@ import DriverDashboard from "./pages/DriverDashboard";
 import DriverProfile from "./pages/driver/DriverProfile";
 import DriverQuotes from "./pages/driver/DriverQuotes";
 import DriverVehicles from "./pages/driver/DriverVehicles";
+import AddVehicle from "./pages/driver/AddVehicle";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -46,6 +48,7 @@ const App = () => (
           <Route path="/driver/perfil" element={<DriverProfile />} />
           <Route path="/driver/orcamentos" element={<DriverQuotes />} />
           <Route path="/driver/veiculos" element={<DriverVehicles />} />
+          <Route path="/driver/adicionar-veiculo" element={<AddVehicle />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
