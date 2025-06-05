@@ -9,7 +9,6 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowLeft, Car, Plus, Save, AlertCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import DriverHeader from '@/components/DriverHeader';
-import MobileBottomNav from '@/components/MobileBottomNav';
 import { Vehicle } from '@/types/vehicle';
 
 const AddVehicle = () => {
@@ -90,74 +89,74 @@ const AddVehicle = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50 pb-20 md:pb-8">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-blue-50 to-orange-50">
       <DriverHeader />
       
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Header */}
-        <div className="mb-6 md:mb-8 animate-fade-in">
+        <div className="mb-8 animate-fade-in">
           <div className="flex items-center space-x-4 mb-6">
-            <Link to="/driver/veiculos" className="text-gray-600 hover:text-blue-800 transition-colors touch-target">
-              <ArrowLeft className="h-5 w-5 md:h-6 md:w-6" />
+            <Link to="/driver/veiculos" className="text-gray-600 hover:text-blue-800 transition-colors">
+              <ArrowLeft className="h-6 w-6" />
             </Link>
             <div>
-              <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-900">
+              <h1 className="text-2xl md:text-3xl font-bold text-gray-900">
                 Adicionar Novo Veículo 🚗
               </h1>
-              <p className="text-sm md:text-base text-gray-600 mt-1">Cadastre um novo veículo em sua conta</p>
+              <p className="text-gray-600 mt-1">Cadastre um novo veículo em sua conta</p>
             </div>
           </div>
         </div>
 
         {/* Form */}
         <Card className="bg-white/80 backdrop-blur-sm border-0 shadow-xl animate-fade-in" style={{ animationDelay: '0.1s' }}>
-          <CardHeader className="pb-4 md:pb-6">
-            <CardTitle className="flex items-center space-x-2 text-lg md:text-xl">
+          <CardHeader>
+            <CardTitle className="flex items-center space-x-2">
               <Car className="h-5 w-5 text-blue-600" />
               <span>Informações do Veículo</span>
             </CardTitle>
           </CardHeader>
           
           <CardContent>
-            <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6">
               {/* Basic Information */}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <Label htmlFor="brand" className="text-sm md:text-base">Marca *</Label>
+                  <Label htmlFor="brand">Marca *</Label>
                   <Input
                     id="brand"
                     value={formData.brand}
                     onChange={(e) => handleInputChange('brand', e.target.value)}
                     placeholder="Ex: Honda, Toyota, Volkswagen"
-                    className={`mt-1 ${errors.brand ? 'border-red-500' : ''}`}
+                    className={errors.brand ? 'border-red-500' : ''}
                   />
                   {errors.brand && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.brand}</span>
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="model" className="text-sm md:text-base">Modelo *</Label>
+                  <Label htmlFor="model">Modelo *</Label>
                   <Input
                     id="model"
                     value={formData.model}
                     onChange={(e) => handleInputChange('model', e.target.value)}
                     placeholder="Ex: Civic, Corolla, Gol"
-                    className={`mt-1 ${errors.model ? 'border-red-500' : ''}`}
+                    className={errors.model ? 'border-red-500' : ''}
                   />
                   {errors.model && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.model}</span>
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="year" className="text-sm md:text-base">Ano *</Label>
+                  <Label htmlFor="year">Ano *</Label>
                   <Input
                     id="year"
                     type="number"
@@ -166,52 +165,52 @@ const AddVehicle = () => {
                     placeholder="Ex: 2020"
                     min="1900"
                     max={new Date().getFullYear() + 1}
-                    className={`mt-1 ${errors.year ? 'border-red-500' : ''}`}
+                    className={errors.year ? 'border-red-500' : ''}
                   />
                   {errors.year && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.year}</span>
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="plate" className="text-sm md:text-base">Placa *</Label>
+                  <Label htmlFor="plate">Placa *</Label>
                   <Input
                     id="plate"
                     value={formData.plate}
                     onChange={(e) => handleInputChange('plate', e.target.value.toUpperCase())}
                     placeholder="Ex: ABC-1234"
-                    className={`mt-1 ${errors.plate ? 'border-red-500' : ''}`}
+                    className={errors.plate ? 'border-red-500' : ''}
                   />
                   {errors.plate && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.plate}</span>
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="color" className="text-sm md:text-base">Cor *</Label>
+                  <Label htmlFor="color">Cor *</Label>
                   <Input
                     id="color"
                     value={formData.color}
                     onChange={(e) => handleInputChange('color', e.target.value)}
                     placeholder="Ex: Branco, Prata, Azul"
-                    className={`mt-1 ${errors.color ? 'border-red-500' : ''}`}
+                    className={errors.color ? 'border-red-500' : ''}
                   />
                   {errors.color && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.color}</span>
                     </p>
                   )}
                 </div>
 
                 <div>
-                  <Label htmlFor="mileage" className="text-sm md:text-base">Quilometragem Atual *</Label>
+                  <Label htmlFor="mileage">Quilometragem Atual *</Label>
                   <Input
                     id="mileage"
                     type="number"
@@ -219,11 +218,11 @@ const AddVehicle = () => {
                     onChange={(e) => handleInputChange('mileage', e.target.value)}
                     placeholder="Ex: 45000"
                     min="0"
-                    className={`mt-1 ${errors.mileage ? 'border-red-500' : ''}`}
+                    className={errors.mileage ? 'border-red-500' : ''}
                   />
                   {errors.mileage && (
-                    <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                      <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                    <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                      <AlertCircle className="h-4 w-4" />
                       <span>{errors.mileage}</span>
                     </p>
                   )}
@@ -232,9 +231,9 @@ const AddVehicle = () => {
 
               {/* Fuel Type */}
               <div>
-                <Label htmlFor="fuelType" className="text-sm md:text-base">Tipo de Combustível *</Label>
+                <Label htmlFor="fuelType">Tipo de Combustível *</Label>
                 <Select value={formData.fuelType} onValueChange={(value) => handleInputChange('fuelType', value)}>
-                  <SelectTrigger className={`mt-1 ${errors.fuelType ? 'border-red-500' : ''}`}>
+                  <SelectTrigger className={errors.fuelType ? 'border-red-500' : ''}>
                     <SelectValue placeholder="Selecione o tipo de combustível" />
                   </SelectTrigger>
                   <SelectContent>
@@ -247,8 +246,8 @@ const AddVehicle = () => {
                   </SelectContent>
                 </Select>
                 {errors.fuelType && (
-                  <p className="text-red-600 text-xs md:text-sm mt-1 flex items-center space-x-1">
-                    <AlertCircle className="h-3 w-3 md:h-4 md:w-4" />
+                  <p className="text-red-600 text-sm mt-1 flex items-center space-x-1">
+                    <AlertCircle className="h-4 w-4" />
                     <span>{errors.fuelType}</span>
                   </p>
                 )}
@@ -256,39 +255,39 @@ const AddVehicle = () => {
 
               {/* Documents */}
               <div>
-                <Label className="text-sm md:text-base font-medium">Documentos (opcionais)</Label>
-                <p className="text-xs md:text-sm text-gray-600 mb-4">Marque os documentos que você possui em dia</p>
+                <Label className="text-base font-medium">Documentos (opcionais)</Label>
+                <p className="text-sm text-gray-600 mb-4">Marque os documentos que você possui em dia</p>
                 
-                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                  <div className="flex items-center space-x-2 touch-target">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div className="flex items-center space-x-2">
                     <Checkbox
                       id="registration"
                       checked={formData.documents.registration}
                       onCheckedChange={(checked) => handleDocumentChange('registration', !!checked)}
                     />
-                    <Label htmlFor="registration" className="text-xs md:text-sm">
+                    <Label htmlFor="registration" className="text-sm">
                       CRLV (Certificado de Registro)
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2 touch-target">
+                  <div className="flex items-center space-x-2">
                     <Checkbox
                       id="insurance"
                       checked={formData.documents.insurance}
                       onCheckedChange={(checked) => handleDocumentChange('insurance', !!checked)}
                     />
-                    <Label htmlFor="insurance" className="text-xs md:text-sm">
+                    <Label htmlFor="insurance" className="text-sm">
                       Seguro do Veículo
                     </Label>
                   </div>
 
-                  <div className="flex items-center space-x-2 touch-target">
+                  <div className="flex items-center space-x-2">
                     <Checkbox
                       id="inspection"
                       checked={formData.documents.inspection}
                       onCheckedChange={(checked) => handleDocumentChange('inspection', !!checked)}
                     />
-                    <Label htmlFor="inspection" className="text-xs md:text-sm">
+                    <Label htmlFor="inspection" className="text-sm">
                       Vistoria em Dia
                     </Label>
                   </div>
@@ -297,13 +296,13 @@ const AddVehicle = () => {
 
               {/* Submit Buttons */}
               <div className="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4 pt-6">
-                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700 touch-target">
+                <Button type="submit" className="flex-1 bg-blue-600 hover:bg-blue-700">
                   <Save className="h-4 w-4 mr-2" />
                   Cadastrar Veículo
                 </Button>
                 
                 <Link to="/driver/veiculos" className="flex-1">
-                  <Button type="button" variant="outline" className="w-full touch-target">
+                  <Button type="button" variant="outline" className="w-full">
                     Cancelar
                   </Button>
                 </Link>
@@ -312,8 +311,6 @@ const AddVehicle = () => {
           </CardContent>
         </Card>
       </div>
-      
-      <MobileBottomNav />
     </div>
   );
 };
