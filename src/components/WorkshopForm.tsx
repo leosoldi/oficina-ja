@@ -1,193 +1,196 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
+
+import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Card, CardContent } from '@/components/ui/card';
-import { toast } from 'sonner';
-import { Building, FileText, User, Phone, Mail, MapPin, Lock, Wrench } from 'lucide-react';
-interface WorkshopFormData {
-  workshopName: string;
-  cnpj: string;
-  ownerName: string;
-  phone: string;
-  email: string;
-  address: string;
-  services: string;
-  password: string;
-  confirmPassword: string;
-}
+import { useNavigate } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
+
 const WorkshopForm = () => {
-  const {
-    register,
-    handleSubmit,
-    watch,
-    formState: {
-      errors,
-      isSubmitting
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    cnpj: '',
+    address: '',
+    city: '',
+    state: '',
+    description: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
+  const { toast } = useToast();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+
+    // Validação básica
+    if (formData.password !== formData.confirmPassword) {
+      toast({
+        title: "Erro no cadastro",
+        description: "As senhas não coincidem.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
     }
-  } = useForm<WorkshopFormData>();
-  const password = watch('password');
-  const onSubmit = async (data: WorkshopFormData) => {
-    try {
-      console.log('Formulário de oficina enviado:', data);
-      toast.success('Cadastro realizado com sucesso!');
-    } catch (error) {
-      toast.error('Erro ao realizar cadastro. Tente novamente.');
-    }
+
+    // Simulação de cadastro
+    setTimeout(() => {
+      toast({
+        title: "Cadastro realizado com sucesso!",
+        description: "Redirecionando para o dashboard da oficina...",
+      });
+      navigate('/dashboard-oficina');
+      setIsLoading(false);
+    }, 2000);
   };
-  return <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="workshop-name" className="text-sm font-medium text-gray-700">
-            Nome da Oficina *
-          </Label>
-          <div className="relative">
-            <Building className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="workshop-name" type="text" placeholder="Ex: Oficina do João" className={`pl-10 ${errors.workshopName ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('workshopName', {
-            required: 'Nome da oficina é obrigatório'
-          })} />
-          </div>
-          {errors.workshopName && <p className="text-sm text-red-600">{errors.workshopName.message}</p>}
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name">Nome da Oficina</Label>
+          <Input
+            id="name"
+            name="name"
+            value={formData.name}
+            onChange={handleChange}
+            placeholder="Auto Center Silva"
+            required
+          />
         </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="cnpj" className="text-sm font-medium text-gray-700">
-            CNPJ *
-          </Label>
-          <div className="relative">
-            <FileText className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="cnpj" type="text" placeholder="00.000.000/0000-00" className={`pl-10 ${errors.cnpj ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('cnpj', {
-            required: 'CNPJ é obrigatório'
-          })} />
-          </div>
-          {errors.cnpj && <p className="text-sm text-red-600">{errors.cnpj.message}</p>}
+        <div>
+          <Label htmlFor="cnpj">CNPJ</Label>
+          <Input
+            id="cnpj"
+            name="cnpj"
+            value={formData.cnpj}
+            onChange={handleChange}
+            placeholder="00.000.000/0001-00"
+            required
+          />
         </div>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="owner-name" className="text-sm font-medium text-gray-700">
-            Nome do Responsável *
-          </Label>
-          <div className="relative">
-            <User className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="owner-name" type="text" placeholder="Nome completo" className={`pl-10 ${errors.ownerName ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('ownerName', {
-            required: 'Nome do responsável é obrigatório'
-          })} />
-          </div>
-          {errors.ownerName && <p className="text-sm text-red-600">{errors.ownerName.message}</p>}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="email">E-mail</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            value={formData.email}
+            onChange={handleChange}
+            placeholder="contato@oficina.com"
+            required
+          />
         </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="phone" className="text-sm font-medium text-gray-700">
-            Telefone *
-          </Label>
-          <div className="relative">
-            <Phone className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="phone" type="tel" placeholder="(11) 99999-9999" className={`pl-10 ${errors.phone ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('phone', {
-            required: 'Telefone é obrigatório'
-          })} />
-          </div>
-          {errors.phone && <p className="text-sm text-red-600">{errors.phone.message}</p>}
+        <div>
+          <Label htmlFor="phone">Telefone</Label>
+          <Input
+            id="phone"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            placeholder="(11) 99999-9999"
+            required
+          />
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="email" className="text-sm font-medium text-gray-700">
-          E-mail *
-        </Label>
-        <div className="relative">
-          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input id="email" type="email" placeholder="contato@oficina.com" className={`pl-10 ${errors.email ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('email', {
-          required: 'E-mail é obrigatório',
-          pattern: {
-            value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-            message: 'E-mail inválido'
-          }
-        })} />
-        </div>
-        {errors.email && <p className="text-sm text-red-600">{errors.email.message}</p>}
+      <div>
+        <Label htmlFor="address">Endereço</Label>
+        <Input
+          id="address"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+          placeholder="Rua das Flores, 123"
+          required
+        />
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="address" className="text-sm font-medium text-gray-700">
-          Endereço Completo *
-        </Label>
-        <div className="relative">
-          <MapPin className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          <Input id="address" type="text" placeholder="Rua, número, bairro, cidade, CEP" className={`pl-10 ${errors.address ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('address', {
-          required: 'Endereço é obrigatório'
-        })} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="city">Cidade</Label>
+          <Input
+            id="city"
+            name="city"
+            value={formData.city}
+            onChange={handleChange}
+            placeholder="São Paulo"
+            required
+          />
         </div>
-        {errors.address && <p className="text-sm text-red-600">{errors.address.message}</p>}
-      </div>
-
-      <div className="space-y-2">
-        
-        <div className="relative">
-          <Wrench className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-          
-        </div>
-        {errors.services && <p className="text-sm text-red-600">{errors.services.message}</p>}
-      </div>
-
-      <div className="grid md:grid-cols-2 gap-6">
-        <div className="space-y-2">
-          <Label htmlFor="password" className="text-sm font-medium text-gray-700">
-            Senha *
-          </Label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="password" type="password" placeholder="Mínimo 8 caracteres" className={`pl-10 ${errors.password ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('password', {
-            required: 'Senha é obrigatória',
-            minLength: {
-              value: 8,
-              message: 'Senha deve ter pelo menos 8 caracteres'
-            }
-          })} />
-          </div>
-          {errors.password && <p className="text-sm text-red-600">{errors.password.message}</p>}
-        </div>
-        
-        <div className="space-y-2">
-          <Label htmlFor="confirm-password" className="text-sm font-medium text-gray-700">
-            Confirmar Senha *
-          </Label>
-          <div className="relative">
-            <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-            <Input id="confirm-password" type="password" placeholder="Digite a senha novamente" className={`pl-10 ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300 focus:border-blue-500'}`} {...register('confirmPassword', {
-            required: 'Confirmação de senha é obrigatória',
-            validate: value => value === password || 'As senhas não coincidem'
-          })} />
-          </div>
-          {errors.confirmPassword && <p className="text-sm text-red-600">{errors.confirmPassword.message}</p>}
+        <div>
+          <Label htmlFor="state">Estado</Label>
+          <Input
+            id="state"
+            name="state"
+            value={formData.state}
+            onChange={handleChange}
+            placeholder="SP"
+            required
+          />
         </div>
       </div>
 
-      <Card className="bg-blue-50 border-blue-200">
-        <CardContent className="pt-6">
-          <p className="text-sm text-blue-800">
-            <strong>Benefícios para Oficinas:</strong><br />
-            • Receba pedidos de serviço diretamente pelo app<br />
-            • Gerencie sua agenda de forma organizada<br />
-            • Aumente sua visibilidade para novos clientes<br />
-            • Sistema de avaliações para construir reputação
-          </p>
-        </CardContent>
-      </Card>
+      <div>
+        <Label htmlFor="description">Descrição dos Serviços</Label>
+        <Textarea
+          id="description"
+          name="description"
+          value={formData.description}
+          onChange={handleChange}
+          placeholder="Descreva os principais serviços oferecidos pela sua oficina..."
+          rows={3}
+        />
+      </div>
 
-      <Button type="submit" disabled={isSubmitting} className="w-full bg-blue-800 hover:bg-blue-900 text-white py-3 text-lg font-medium transition-colors">
-        {isSubmitting ? 'Cadastrando...' : 'Cadastrar Oficina'}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="password">Senha</Label>
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            value={formData.password}
+            onChange={handleChange}
+            placeholder="Mínimo 6 caracteres"
+            required
+          />
+        </div>
+        <div>
+          <Label htmlFor="confirmPassword">Confirmar Senha</Label>
+          <Input
+            id="confirmPassword"
+            name="confirmPassword"
+            type="password"
+            value={formData.confirmPassword}
+            onChange={handleChange}
+            placeholder="Confirme sua senha"
+            required
+          />
+        </div>
+      </div>
+
+      <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700" disabled={isLoading}>
+        {isLoading ? 'Cadastrando...' : 'Cadastrar Oficina'}
       </Button>
-
-      <p className="text-center text-sm text-gray-600">
-        Já tem uma conta?{' '}
-        <a href="/login" className="text-blue-800 hover:text-blue-900 font-medium hover:underline transition-colors">
-          Fazer login
-        </a>
-      </p>
-    </form>;
+    </form>
+  );
 };
+
 export default WorkshopForm;
