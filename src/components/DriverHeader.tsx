@@ -1,61 +1,170 @@
 
-import React from 'react';
+import React, { useState } from 'react';
+import { Menu, X, Car, Bell, User, Settings, LogOut, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Link, useNavigate } from 'react-router-dom';
-import { Car, User, LogOut } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { Badge } from '@/components/ui/badge';
+import { Link } from 'react-router-dom';
 
 const DriverHeader = () => {
-  const navigate = useNavigate();
-  const { toast } = useToast();
-
-  const handleLogout = () => {
-    toast({
-      title: "Logout realizado",
-      description: "Você foi desconectado com sucesso.",
-    });
-    navigate('/');
-  };
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [notifications] = useState(3);
 
   return (
-    <header className="bg-white/95 backdrop-blur-sm border-b border-gray-200 sticky top-0 z-50">
+    <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
-          <Link to="/dashboard-motorista" className="flex items-center space-x-2">
-            <div className="w-8 h-8 bg-orange-500 rounded-lg flex items-center justify-center">
-              <Car className="h-5 w-5 text-white" />
-            </div>
-            <span className="text-xl font-bold text-gray-900">OficinaJá</span>
-          </Link>
-          
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link to="/dashboard-motorista" className="text-gray-600 hover:text-orange-500 transition-colors">
-              Dashboard
+          {/* Logo */}
+          <div className="flex items-center space-x-2">
+            <Link to="/dashboard-motorista" className="text-xl md:text-2xl font-bold">
+              <span className="text-blue-800">Oficina</span>
+              <span className="text-orange-500">Já</span>
             </Link>
-            <Link to="/driver/veiculos" className="text-gray-600 hover:text-orange-500 transition-colors">
+          </div>
+
+          {/* Mobile Header Actions */}
+          <div className="md:hidden flex items-center space-x-2">
+            <Button variant="ghost" size="sm" className="relative p-2">
+              <Bell className="h-5 w-5 text-gray-600" />
+              {notifications > 0 && (
+                <Badge className="absolute -top-1 -right-1 h-4 w-4 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                  {notifications}
+                </Badge>
+              )}
+            </Button>
+            <Button variant="ghost" size="sm" className="p-2">
+              <User className="h-5 w-5 text-gray-600" />
+            </Button>
+            <button 
+              onClick={() => setIsMenuOpen(!isMenuOpen)} 
+              className="p-2 text-gray-700 hover:text-blue-800"
+            >
+              {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+            </button>
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex space-x-6">
+            <Link to="/buscar-oficinas" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Buscar Oficinas
+            </Link>
+            <Link to="/driver/agendamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Meus Agendamentos
+            </Link>
+            <Link to="/driver/orcamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Meus Orçamentos
+            </Link>
+            <Link to="/driver/veiculos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Meus Veículos
             </Link>
-            <Link to="/driver/orcamentos" className="text-gray-600 hover:text-orange-500 transition-colors">
-              Orçamentos
-            </Link>
-            <Link to="/buscar-oficinas" className="text-gray-600 hover:text-orange-500 transition-colors">
-              Buscar Oficinas
+            <Link to="/driver/historico" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Histórico
             </Link>
           </nav>
 
-          <div className="flex items-center space-x-3">
-            <Link to="/driver/perfil">
-              <Button variant="outline" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Perfil
-              </Button>
-            </Link>
-            <Button variant="outline" size="sm" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Sair
+          {/* Desktop User Menu */}
+          <div className="hidden md:flex items-center space-x-4">
+            <Button variant="ghost" size="sm" className="relative">
+              <Bell className="h-4 w-4 mr-2" />
+              Notificações
+              {notifications > 0 && (
+                <Badge className="absolute -top-2 -right-2 h-5 w-5 flex items-center justify-center p-0 bg-red-500 text-white text-xs">
+                  {notifications}
+                </Badge>
+              )}
+            </Button>
+            
+            <div className="flex items-center space-x-2">
+              <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                <User className="h-5 w-5 text-blue-600" />
+              </div>
+              <div className="text-sm">
+                <p className="font-medium text-gray-900">João Silva</p>
+                <p className="text-gray-500">Motorista</p>
+              </div>
+            </div>
+
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/driver/perfil">
+                <Settings className="h-4 w-4 mr-2" />
+                Configurações
+              </Link>
             </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation Menu */}
+        {isMenuOpen && (
+          <div className="md:hidden py-4 border-t border-gray-200 animate-slide-down">
+            <nav className="flex flex-col space-y-3">
+              <Link 
+                to="/buscar-oficinas" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Search className="h-5 w-5 mr-3" />
+                Buscar Oficinas
+              </Link>
+              <Link 
+                to="/driver/agendamentos" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Car className="h-5 w-5 mr-3" />
+                Meus Agendamentos
+              </Link>
+              <Link 
+                to="/driver/orcamentos" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Car className="h-5 w-5 mr-3" />
+                Meus Orçamentos
+              </Link>
+              <Link 
+                to="/driver/veiculos" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Car className="h-5 w-5 mr-3" />
+                Meus Veículos
+              </Link>
+              <Link 
+                to="/driver/historico" 
+                className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <Car className="h-5 w-5 mr-3" />
+                Histórico
+              </Link>
+              
+              <div className="border-t border-gray-200 pt-3 mt-3">
+                <Link 
+                  to="/driver/perfil" 
+                  className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <User className="h-5 w-5 mr-3" />
+                  Meu Perfil
+                </Link>
+                <Link 
+                  to="/driver/configuracoes" 
+                  className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 transition-colors flex items-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <Settings className="h-5 w-5 mr-3" />
+                  Configurações
+                </Link>
+                <button 
+                  className="w-full text-left text-red-600 hover:text-red-800 font-medium py-3 px-2 rounded-lg hover:bg-red-50 transition-colors flex items-center"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  <LogOut className="h-5 w-5 mr-3" />
+                  Sair
+                </button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
