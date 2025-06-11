@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,9 +96,13 @@ const HeroSection = () => {
         }}>
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:bg-white/15">
               <div className="text-center mb-4 md:mb-6">
-                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2">
-                  Encontre serviços próximos
+                <h3 className="text-xl md:text-2xl lg:text-3xl font-bold mb-2">
+                  <span className="text-blue-400">Oficina</span>
+                  <span className="text-orange-400">Já</span>
                 </h3>
+                <h4 className="text-lg md:text-xl text-white mb-2">
+                  Encontre serviços próximos
+                </h4>
                 <p className="text-sm md:text-base text-blue-100">Mais de 500 oficinas cadastradas</p>
               </div>
 
