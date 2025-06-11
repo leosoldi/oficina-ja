@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
-import { Menu, X, Car, Wrench, Bell, User } from 'lucide-react';
+import { Menu, X, Bell, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -12,10 +13,10 @@ const Header = () => {
         <div className="flex justify-between items-center h-16 md:h-16">
           {/* Logo */}
           <div className="flex items-center space-x-2">
-            <a href="/" className="text-xl md:text-2xl font-bold">
+            <Link to="/" className="text-xl md:text-2xl font-bold">
               <span className="text-blue-800">Oficina</span>
               <span className="text-orange-500">Já</span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Header Actions */}
@@ -36,9 +37,9 @@ const Header = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex space-x-8">
-            <a href="#motoristas" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Para Motoristas
-            </a>
+            <Link to="/buscar-oficinas" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
+              Buscar Oficinas
+            </Link>
             <a href="#oficinas" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
               Para Oficinas
             </a>
@@ -53,10 +54,10 @@ const Header = () => {
           {/* Desktop CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="outline" className="border-blue-800 text-blue-800 hover:bg-blue-50" asChild>
-              <a href="/login">Entrar</a>
+              <Link to="/login">Entrar</Link>
             </Button>
             <Button asChild className="bg-orange-500 hover:bg-orange-600 text-white">
-              <a href="/cadastro">Cadastrar</a>
+              <Link to="/cadastro">Cadastrar</Link>
             </Button>
           </div>
         </div>
@@ -65,13 +66,13 @@ const Header = () => {
         {isMenuOpen && (
           <div className="md:hidden py-4 border-t border-gray-200 animate-slide-up">
             <nav className="flex flex-col space-y-4">
-              <a 
-                href="#motoristas" 
+              <Link 
+                to="/buscar-oficinas" 
                 className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 touch-target transition-colors"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Para Motoristas
-              </a>
+                Buscar Oficinas
+              </Link>
               <a 
                 href="#oficinas" 
                 className="text-gray-700 hover:text-blue-800 font-medium py-3 px-2 rounded-lg hover:bg-blue-50 touch-target transition-colors"
@@ -99,13 +100,13 @@ const Header = () => {
                   className="border-blue-800 text-blue-800 hover:bg-blue-50 touch-target" 
                   asChild
                 >
-                  <a href="/login">Entrar</a>
+                  <Link to="/login">Entrar</Link>
                 </Button>
                 <Button 
                   asChild 
                   className="bg-orange-500 hover:bg-orange-600 text-white touch-target"
                 >
-                  <a href="/cadastro">Cadastrar</a>
+                  <Link to="/cadastro">Cadastrar</Link>
                 </Button>
               </div>
             </nav>

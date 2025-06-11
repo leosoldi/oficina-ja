@@ -2,14 +2,17 @@
 import React from 'react';
 import { Home, Search, Calendar, User, Settings } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link, useLocation } from 'react-router-dom';
 
 const MobileBottomNav = () => {
+  const location = useLocation();
+  
   const navItems = [
-    { icon: Home, label: 'Início', href: '/', active: true },
-    { icon: Search, label: 'Buscar', href: '/buscar' },
-    { icon: Calendar, label: 'Agenda', href: '/agenda' },
-    { icon: User, label: 'Perfil', href: '/perfil' },
-    { icon: Settings, label: 'Config', href: '/config' },
+    { icon: Home, label: 'Início', href: '/', active: location.pathname === '/' },
+    { icon: Search, label: 'Buscar', href: '/buscar-oficinas', active: location.pathname === '/buscar-oficinas' },
+    { icon: Calendar, label: 'Agenda', href: '/agenda', active: location.pathname === '/agenda' },
+    { icon: User, label: 'Perfil', href: '/perfil', active: location.pathname === '/perfil' },
+    { icon: Settings, label: 'Config', href: '/config', active: location.pathname === '/config' },
   ];
 
   return (
@@ -27,10 +30,10 @@ const MobileBottomNav = () => {
             }`}
             asChild
           >
-            <a href={item.href} className="flex flex-col items-center gap-1">
+            <Link to={item.href} className="flex flex-col items-center gap-1">
               <item.icon className="h-5 w-5" />
               <span className="text-xs font-medium leading-none">{item.label}</span>
-            </a>
+            </Link>
           </Button>
         ))}
       </div>

@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Mail, Lock } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface DriverLoginFormData {
   email: string;
@@ -14,12 +15,14 @@ interface DriverLoginFormData {
 }
 
 const DriverLoginForm = () => {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<DriverLoginFormData>();
 
   const onSubmit = async (data: DriverLoginFormData) => {
     try {
       console.log('Login do motorista:', data);
       toast.success('Login realizado com sucesso!');
+      navigate('/dashboard-motorista');
     } catch (error) {
       toast.error('Erro ao fazer login. Tente novamente.');
     }

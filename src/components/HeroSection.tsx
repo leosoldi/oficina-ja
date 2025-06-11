@@ -1,9 +1,10 @@
+
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Search, ChevronDown, Star, Users, Award, MapPin } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const HeroSection = () => {
   const navigate = useNavigate();
@@ -34,7 +35,8 @@ const HeroSection = () => {
     navigate(`/buscar-oficinas?${searchParams.toString()}`);
   };
 
-  return <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 md:py-20 lg:py-32 overflow-hidden">
+  return (
+    <section className="relative bg-gradient-to-br from-blue-900 via-blue-800 to-blue-700 text-white py-12 md:py-20 lg:py-32 overflow-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-orange-500/10 rounded-full blur-3xl animate-pulse"></div>
@@ -67,9 +69,10 @@ const HeroSection = () => {
 
             {/* Estatísticas - Mobile optimized */}
             <div className="flex flex-wrap justify-center lg:justify-start gap-4 md:gap-8">
-              {stats.map((stat, index) => <div key={index} className="flex items-center space-x-2 md:space-x-3 animate-fade-in" style={{
-              animationDelay: `${index * 0.2}s`
-            }}>
+              {stats.map((stat, index) => (
+                <div key={index} className="flex items-center space-x-2 md:space-x-3 animate-fade-in" style={{
+                  animationDelay: `${index * 0.2}s`
+                }}>
                   <div className="bg-orange-500/20 p-1.5 md:p-2 rounded-lg">
                     <stat.icon className="h-4 w-4 md:h-5 md:w-5 text-orange-400" />
                   </div>
@@ -77,22 +80,26 @@ const HeroSection = () => {
                     <div className="text-lg md:text-2xl font-bold">{stat.value}</div>
                     <div className="text-xs md:text-sm text-blue-200">{stat.label}</div>
                   </div>
-                </div>)}
+                </div>
+              ))}
             </div>
 
             {/* Botões - Mobile first */}
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 max-w-sm mx-auto lg:mx-0 lg:max-w-none">
               <Button asChild size="lg" className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl hover:shadow-2xl transform hover:scale-105 transition-all duration-300 touch-target">
-                
+                <Link to="/cadastro">Cadastre-se Gratuitamente</Link>
               </Button>
               
+              <Button asChild variant="outline" size="lg" className="border-white/30 text-white hover:bg-white/10 backdrop-blur-sm px-6 md:px-8 py-3 md:py-4 text-base md:text-lg shadow-xl transform hover:scale-105 transition-all duration-300 touch-target">
+                <Link to="/login">Já tenho conta</Link>
+              </Button>
             </div>
           </div>
 
           {/* Busca de Serviços - Mobile optimized */}
           <div className="relative animate-fade-in" style={{
-          animationDelay: '0.3s'
-        }}>
+            animationDelay: '0.3s'
+          }}>
             <div className="bg-white/10 backdrop-blur-lg rounded-2xl md:rounded-3xl p-4 md:p-8 border border-white/20 shadow-2xl hover:shadow-3xl transition-all duration-500 hover:bg-white/15">
               <div className="text-center mb-4 md:mb-6">
                 <h3 className="text-xl md:text-2xl lg:text-3xl font-bold text-white mb-2">
@@ -108,7 +115,13 @@ const HeroSection = () => {
                     <MapPin className="h-4 w-4" />
                     Sua localização
                   </label>
-                  <Input type="text" placeholder="Digite sua cidade ou CEP" value={location} onChange={e => setLocation(e.target.value)} className="w-full h-11 md:h-12 bg-white/20 text-white placeholder-white/60 border-white/30 rounded-xl backdrop-blur-sm focus:bg-white/25 focus:border-orange-400 transition-all duration-300 text-base" />
+                  <Input 
+                    type="text" 
+                    placeholder="Digite sua cidade ou CEP" 
+                    value={location} 
+                    onChange={e => setLocation(e.target.value)} 
+                    className="w-full h-11 md:h-12 bg-white/20 text-white placeholder-white/60 border-white/30 rounded-xl backdrop-blur-sm focus:bg-white/25 focus:border-orange-400 transition-all duration-300 text-base" 
+                  />
                 </div>
 
                 {/* Dropdown de Serviços - Mobile optimized */}
@@ -122,9 +135,15 @@ const HeroSection = () => {
                       </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent className="w-full bg-white shadow-xl rounded-xl border-0 z-50 max-h-60 overflow-y-auto">
-                      {services.map(service => <DropdownMenuItem key={service} onClick={() => setSelectedService(service)} className="cursor-pointer hover:bg-orange-50 hover:text-orange-600 rounded-lg mx-1 transition-colors py-3 text-base touch-target">
+                      {services.map(service => (
+                        <DropdownMenuItem 
+                          key={service} 
+                          onClick={() => setSelectedService(service)} 
+                          className="cursor-pointer hover:bg-orange-50 hover:text-orange-600 rounded-lg mx-1 transition-colors py-3 text-base touch-target"
+                        >
                           {service}
-                        </DropdownMenuItem>)}
+                        </DropdownMenuItem>
+                      ))}
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </div>
@@ -151,7 +170,8 @@ const HeroSection = () => {
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
 
 export default HeroSection;
