@@ -8,6 +8,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { User, Mail, Phone, MapPin, Lock, Calendar } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SocialLoginButton } from '@/components/GoogleButton'
 
 interface DriverFormData {
   name: string;
@@ -41,6 +42,9 @@ const DriverForm = () => {
   return (
     <Card className="border-0 bg-gradient-to-br from-orange-50/50 to-white shadow-lg backdrop-blur-sm">
       <CardContent className="pt-6 px-6 pb-6">
+        <div>
+          <SocialLoginButton userType="motorista" />
+        </div>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">

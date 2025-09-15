@@ -1,19 +1,18 @@
-
-import React from 'react';
-import { Card, CardContent } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  FileText, 
-  Calendar, 
-  CheckCircle, 
-  Circle, 
+import React from "react";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  FileText,
+  Calendar,
+  CheckCircle,
+  Circle,
   Star,
   Copy,
   Edit,
-  Trash2
-} from 'lucide-react';
-import { Checklist } from '@/types/checklist';
+  Trash2,
+} from "lucide-react";
+import { Checklist } from "@/types/checklist";
 
 interface ChecklistCardProps {
   checklist: Checklist;
@@ -23,36 +22,48 @@ interface ChecklistCardProps {
   onDuplicate?: (id: number) => void;
 }
 
-const ChecklistCard = ({ 
-  checklist, 
-  onUse, 
-  onEdit, 
-  onDelete, 
-  onDuplicate 
+const ChecklistCard = ({
+  checklist,
+  onUse,
+  onEdit,
+  onDelete,
+  onDuplicate,
 }: ChecklistCardProps) => {
+  console.log(checklist);
   const getCategoryColor = (category: string) => {
     switch (category) {
-      case 'inspection': return 'bg-blue-100 text-blue-800';
-      case 'maintenance': return 'bg-green-100 text-green-800';
-      case 'repair': return 'bg-red-100 text-red-800';
-      case 'custom': return 'bg-purple-100 text-purple-800';
-      default: return 'bg-gray-100 text-gray-800';
+      case "inspection":
+        return "bg-blue-100 text-blue-800";
+      case "maintenance":
+        return "bg-green-100 text-green-800";
+      case "repair":
+        return "bg-red-100 text-red-800";
+      case "custom":
+        return "bg-purple-100 text-purple-800";
+      default:
+        return "bg-gray-100 text-gray-800";
     }
   };
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
-      case 'inspection': return 'Inspeção';
-      case 'maintenance': return 'Manutenção';
-      case 'repair': return 'Reparo';
-      case 'custom': return 'Personalizado';
-      default: return category;
+      case "inspection":
+        return "Inspeção";
+      case "maintenance":
+        return "Manutenção";
+      case "repair":
+        return "Reparo";
+      case "custom":
+        return "Personalizado";
+      default:
+        return category;
     }
   };
 
-  const completedItems = checklist.items.filter(item => item.completed).length;
+  const completedItems = checklist.items.filter((i) => i.completed).length;
   const totalItems = checklist.items.length;
-  const completionPercentage = totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
+  const completionPercentage =
+    totalItems > 0 ? (completedItems / totalItems) * 100 : 0;
 
   return (
     <Card className="bg-white border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 group">
@@ -67,8 +78,11 @@ const ChecklistCard = ({
                 <Star className="h-4 w-4 text-yellow-500 fill-current" />
               )}
             </div>
-            <p className="text-sm text-gray-600 mb-3">{checklist.description}</p>
-            
+
+            <p className="text-sm text-gray-600 mb-3">
+              {checklist.description}
+            </p>
+
             <div className="flex flex-wrap gap-2 mb-3">
               <Badge className={getCategoryColor(checklist.category)}>
                 {getCategoryLabel(checklist.category)}
@@ -83,21 +97,24 @@ const ChecklistCard = ({
           </div>
         </div>
 
-        {/* Progress Bar */}
+        {/* Progresso */}
         <div className="mb-4">
           <div className="flex items-center justify-between text-sm text-gray-600 mb-1">
             <span>Progresso</span>
-            <span>{completedItems}/{totalItems} ({Math.round(completionPercentage)}%)</span>
+            <span>
+              {completedItems}/{totalItems} ({Math.round(completionPercentage)}
+              %)
+            </span>
           </div>
           <div className="w-full bg-gray-200 rounded-full h-2">
-            <div 
+            <div
               className="bg-blue-600 h-2 rounded-full transition-all duration-300"
               style={{ width: `${completionPercentage}%` }}
-            ></div>
+            />
           </div>
         </div>
 
-        {/* Quick Preview of Items */}
+        {/* Prévia dos itens */}
         <div className="mb-4">
           <div className="space-y-1">
             {checklist.items.slice(0, 3).map((item) => (
@@ -107,7 +124,13 @@ const ChecklistCard = ({
                 ) : (
                   <Circle className="h-4 w-4 text-gray-400" />
                 )}
-                <span className={item.completed ? 'text-gray-500 line-through' : 'text-gray-700'}>
+                <span
+                  className={
+                    item.completed
+                      ? "text-gray-500 line-through"
+                      : "text-gray-700"
+                  }
+                >
                   {item.text}
                 </span>
                 {item.required && (
@@ -123,42 +146,73 @@ const ChecklistCard = ({
           </div>
         </div>
 
-        {/* Footer */}
+        {/* Rodapé */}
         <div className="flex items-center justify-between pt-4 border-t border-gray-100">
           <div className="flex items-center gap-2 text-xs text-gray-500">
             <Calendar className="h-3 w-3" />
-            {checklist.lastUsed ? `Usado em ${checklist.lastUsed}` : 'Nunca usado'}
+            {checklist.updatedAt
+              ? `Usado em ${new Date(checklist.updatedAt).toLocaleDateString(
+                  "pt-BR"
+                )}`
+              : "Nunca usado"}
           </div>
-          
+
           <div className="flex items-center gap-2">
-            <Button 
-              variant="ghost" 
+            <Button
+              type="button"
+              variant="ghost"
               size="sm"
-              onClick={() => onDuplicate?.(checklist.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDuplicate?.(checklist.id);
+              }}
               className="text-gray-600 hover:text-blue-600"
+              aria-label="Duplicar checklist"
+              title="Duplicar"
             >
               <Copy className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="ghost" 
+
+            <Button
+              type="button"
+              variant="ghost"
               size="sm"
-              onClick={() => onEdit?.(checklist.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onEdit?.(checklist.id);
+              }}
               className="text-gray-600 hover:text-blue-600"
+              aria-label="Editar checklist"
+              title="Editar"
             >
               <Edit className="h-4 w-4" />
             </Button>
-            <Button 
-              variant="ghost" 
+
+            <Button
+              type="button"
+              variant="ghost"
               size="sm"
-              onClick={() => onDelete?.(checklist.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onDelete?.(checklist.id);
+              }}
               className="text-gray-600 hover:text-red-600"
+              aria-label="Excluir checklist"
+              title="Excluir"
             >
               <Trash2 className="h-4 w-4" />
             </Button>
-            <Button 
+
+            <Button
+              type="button"
               size="sm"
-              onClick={() => onUse?.(checklist.id)}
+              onClick={(e) => {
+                e.stopPropagation();
+                onUse?.(checklist.id);
+              }}
               className="bg-blue-600 hover:bg-blue-700 text-white"
+              aria-label="Usar checklist"
+              title="Usar"
             >
               <FileText className="h-4 w-4 mr-1" />
               Usar

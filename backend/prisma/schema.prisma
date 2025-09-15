@@ -1,0 +1,263 @@
+// prisma/schema.prisma
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum Provider {
+  manual
+  google
+}
+
+enum UserType {
+  motorista
+  oficina
+}
+
+enum PreCadastroStatus {
+  PENDING
+  ACCEPTED
+  CANCELED
+  EXPIRED
+}
+
+enum BookingStatus {
+  CONFIRMED
+  PENDING
+  CANCELED
+  DONE
+}
+
+enum ChecklistStatus {
+  OPEN
+  COMPLETED
+}
+
+model Motorista {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  nome      String
+  avatar    String?
+  endereco  String?
+  cidade    String?
+  estado    String?
+  cep       String?
+  telefone  String?
+  googleId  String?   @unique
+  password  String?
+  provider  Provider  @default(manual)
+  type      UserType  @default(motorista)
+  createdAt DateTime  @default(now())
+
+  veiculos  Veiculo[]
+  bookings  Booking[]
+
+  preCadastros PreCadastroMotorista[] @relation("PreToMotorista")
+}
+
+model Oficina {
+  id        String    @id @default(cuid())
+  email     String    @unique
+  nome      String
+  cnpj      String?   @unique
+  telefone  String?
+  whatsapp  String?
+  avatar    String?
+  endereco  String?
+  cidade    String?
+  estado    String?
+  cep       String?
+  descricao String?
+  googleId  String?   @unique
+  password  String?
+  provider  Provider  @default(manual)
+  type      UserType  @default(oficina)
+  createdAt DateTime  @default(now())
+
+  // Horário de funcionamento
+  horarioSegSexInicio String?
+  horarioSegSexFim    String?
+  horarioSabadoInicio String?
+  horarioSabadoFim    String?
+  horarioDomingo      String?
+
+  latitude       Decimal? @db.Decimal(10,7)
+  longitude      Decimal? @db.Decimal(10,7)
+
+  // Relacionamentos
+  servicos       ServicoOferecido[] @relation("OficinaServicos")
+  especialidades Especialidade[]    @relation("OficinaEspecialidades")
+  certificacoes  Certificacao[]     @relation("OficinaCertificacoes")
+  openingRules   OpeningRule[]
+  exceptions     Exception[]
+  occupiedBlocks OccupiedBlock[]
+  bookings       Booking[]
+  preCadastros   PreCadastroMotorista[] @relation("PreToOficina")
+}
+
+model PreCadastroMotorista {
+  id            String    @id @default(cuid())
+  oficinaId     String
+  email         String?
+  nome          String
+  telefone      String?
+  veiculoModelo String?
+  veiculoAno    String?
+  veiculoPlaca  String?
+
+  status        PreCadastroStatus @default(PENDING)
+  token         String            @unique
+  // 7 dias a partir de agora (MySQL)
+  expiresAt     DateTime          @default(dbgenerated("(NOW() + INTERVAL 7 DAY)"))
+  motoristaId   String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  oficina       Oficina   @relation("PreToOficina", fields: [oficinaId], references: [id], onDelete: Cascade)
+  motorista     Motorista? @relation("PreToMotorista", fields: [motoristaId], references: [id], onDelete: SetNull)
+
+  @@index([oficinaId, status])
+  @@index([email])
+  @@index([expiresAt])
+}
+
+model ServicoOferecido {
+  id        Int      @id @default(autoincrement())
+  nome      String
+  oficinaId String
+  descricao String?
+  preco     Float?
+  duracao   String?
+  categoria String?
+  ativo     Boolean  @default(true)
+
+  oficina   Oficina  @relation("OficinaServicos", fields: [oficinaId], references: [id], onDelete: Cascade)
+  bookings  Booking[]
+}
+
+model Especialidade {
+  id        Int     @id @default(autoincrement())
+  marca     String
+  oficinaId String
+
+  oficina   Oficina @relation("OficinaEspecialidades", fields: [oficinaId], references: [id], onDelete: Cascade)
+}
+
+model Certificacao {
+  id        Int     @id @default(autoincrement())
+  titulo    String
+  oficinaId String
+
+  oficina   Oficina @relation("OficinaCertificacoes", fields: [oficinaId], references: [id], onDelete: Cascade)
+}
+
+model Veiculo {
+  id            String    @id @default(cuid())
+  motoristaId   String
+  modelo        String
+  ano           String
+  placa         String
+  cor           String
+  quilometragem String
+  ultimoServico DateTime?
+  createdAt     DateTime  @default(now())
+
+  motorista     Motorista @relation(fields: [motoristaId], references: [id], onDelete: Cascade)
+  bookings      Booking[]
+
+  @@unique([motoristaId, placa]) // evita mesma placa duplicada para o mesmo motorista
+}
+
+model OpeningRule {
+  id          String  @id @default(cuid())
+  oficinaId   String
+  weekday     Int     // 0..6 (validar na aplicação)
+  startTime   String
+  endTime     String
+  breakStart  String?
+  breakEnd    String?
+  slotSizeMin Int     @default(30)
+
+  oficina     Oficina @relation(fields: [oficinaId], references: [id], onDelete: Cascade)
+
+  @@index([oficinaId, weekday])
+}
+
+model Exception {
+  id         String   @id @default(cuid())
+  oficinaId  String
+  date       DateTime
+  startTime  String?
+  endTime    String?
+  reason     String?
+
+  oficina    Oficina  @relation(fields: [oficinaId], references: [id], onDelete: Cascade)
+
+  @@index([oficinaId, date])
+}
+
+model OccupiedBlock {
+  id         String   @id @default(cuid())
+  oficinaId  String
+  start      DateTime
+
+  oficina    Oficina  @relation(fields: [oficinaId], references: [id], onDelete: Cascade)
+
+  @@unique([oficinaId, start])
+  @@index([oficinaId, start])
+}
+
+model Booking {
+  id          String         @id @default(cuid())
+  oficinaId   String
+  motoristaId String?
+  veiculoId   String?
+  servicoId   Int?
+  customer    String?        // opcional: quando não há Motorista
+  phone       String?
+  email       String?
+  start       DateTime
+  end         DateTime
+  notes       String?
+  status      BookingStatus  @default(CONFIRMED)
+
+  oficina     Oficina         @relation(fields: [oficinaId], references: [id], onDelete: Cascade)
+  motorista   Motorista?      @relation(fields: [motoristaId], references: [id], onDelete: SetNull)
+  veiculo     Veiculo?        @relation(fields: [veiculoId], references: [id], onDelete: SetNull)
+  servico     ServicoOferecido? @relation(fields: [servicoId], references: [id], onDelete: SetNull)
+
+  @@index([oficinaId, start])
+}
+
+model Checklist {
+  id                      String          @id @default(cuid())
+  title                   String
+  description             String?
+  category                String
+  isTemplate              Boolean         @default(false)
+  assignedToMotoristaId   String?
+  status                  ChecklistStatus @default(OPEN)
+  notes                   String?
+  completedAt             DateTime?
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+
+  items                   ChecklistItem[]
+
+  // se quiser amarrar ao motorista
+  // motorista Motorista? @relation(fields: [assignedToMotoristaId], references: [id], onDelete: SetNull)
+}
+
+model ChecklistItem {
+  id           Int       @id @default(autoincrement())
+  checklistId  String
+  text         String
+  required     Boolean   @default(false)
+  completed    Boolean   @default(false)
+
+  checklist    Checklist @relation(fields: [checklistId], references: [id], onDelete: Cascade)
+}

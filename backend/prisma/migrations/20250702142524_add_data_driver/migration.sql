@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE `Motorista` ADD COLUMN `cep` VARCHAR(191) NULL,
+    ADD COLUMN `cidade` VARCHAR(191) NULL,
+    ADD COLUMN `endereco` VARCHAR(191) NULL,
+    ADD COLUMN `estado` VARCHAR(191) NULL;

@@ -4,10 +4,14 @@ import { Menu, X, Car, Bell, User, Settings, LogOut, Search } from 'lucide-react
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext'; // ajuste o path se necessário
+
 
 const DriverHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [notifications] = useState(3);
+  const { user, logout } = useAuth();
+
 
   return (
     <header className="bg-white/95 backdrop-blur-sm shadow-sm border-b border-gray-200 sticky top-0 z-50">
@@ -41,27 +45,6 @@ const DriverHeader = () => {
               {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
           </div>
-
-          {/* Desktop Navigation */}
-          <nav className="hidden md:flex space-x-6">
-            <Link to="/buscar-oficinas" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Buscar Oficinas
-            </Link>
-            <Link to="/driver/agendamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Meus Agendamentos
-            </Link>
-            <Link to="/driver/orcamentos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Meus Orçamentos
-            </Link>
-            <Link to="/driver/veiculos" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Meus Veículos
-            </Link>
-            <Link to="/driver/historico" className="text-gray-700 hover:text-blue-800 font-medium transition-colors">
-              Histórico
-            </Link>
-          </nav>
-
-          {/* Desktop User Menu */}
           <div className="hidden md:flex items-center space-x-4">
             <Button variant="ghost" size="sm" className="relative">
               <Bell className="h-4 w-4 mr-2" />
@@ -78,8 +61,8 @@ const DriverHeader = () => {
                 <User className="h-5 w-5 text-blue-600" />
               </div>
               <div className="text-sm">
-                <p className="font-medium text-gray-900">João Silva</p>
-                <p className="text-gray-500">Motorista</p>
+                <p className="font-medium text-gray-900">{user?.name || 'Usuário'}</p>
+                <p className="text-gray-500">{user?.type === 'motorista' ? 'Motorista' : 'Oficina'}</p>
               </div>
             </div>
 

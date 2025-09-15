@@ -1,6 +1,7 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+  
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,6 +10,10 @@ import { Card, CardContent } from '@/components/ui/card';
 import { toast } from 'sonner';
 import { Building, Mail, Phone, MapPin, Lock, User } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { SocialLoginButton } from '@/components/GoogleButton';
+import { authService } from '@/services/authService';
+import { useAuth } from '@/contexts/AuthContext';
+
 
 interface WorkshopFormData {
   name: string;
@@ -29,18 +34,57 @@ const WorkshopForm = () => {
   const { register, handleSubmit, watch, formState: { errors, isSubmitting } } = useForm<WorkshopFormData>();
   const password = watch('password');
 
-  const onSubmit = async (data: WorkshopFormData) => {
-    try {
-      console.log('Cadastro da oficina:', data);
-      toast.success('Cadastro realizado com sucesso!');
-      navigate('/dashboard-oficina');
-    } catch (error) {
-      toast.error('Erro ao realizar cadastro. Tente novamente.');
-    }
-  };
+  useEffect(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const token = urlParams.get('token');
 
+  if (token) {
+    localStorage.setItem('token', token);
+    navigate('/dashboard-oficina'); // ou dashboard-motorista
+  }
+}, []);
+
+
+const { login } = useAuth();
+
+const onSubmit = async (data: WorkshopFormData) => {
+  try {
+    const response = await authService.register({
+      ...data,
+      type: "oficina"
+    });
+
+
+    login(response.token); // já salva no localStorage e define o contexto
+    toast.success('Cadastro realizado com sucesso!');
+    navigate('/dashboard-oficina');
+  } catch (error) {
+    console.error(error);
+    toast.error('Erro ao realizar cadastro. Tente novamente.');
+  }
+};
   return (
     <Card className="border-0 bg-gradient-to-br from-blue-50/50 to-white shadow-lg backdrop-blur-sm">
+      <CardContent className="pt-6 px-6 pb-6">
+        <div className="mb-6">
+          <p className="text-center text-sm text-gray-500 mb-3">entre com</p>
+          <SocialLoginButton userType="oficina" />
+        </div>
+
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-gray-300" />
+          </div>
+          <div className="relative flex justify-center text-sm">
+            <span className="bg-white px-2 text-gray-500">Ou cadastre manualmente</span>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+          {/* ...demais campos */}
+        </form>
+      </CardContent>
+
       <CardContent className="pt-6 px-6 pb-6">
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -256,5 +300,7 @@ const WorkshopForm = () => {
     </Card>
   );
 };
+
+
 
 export default WorkshopForm;

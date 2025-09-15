@@ -21,9 +21,11 @@ import {
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import DriverHeader from '@/components/DriverHeader';
+import { useAuth } from '@/contexts/AuthContext'; // ajuste o path se necessário
 
 const DriverDashboard = () => {
   const [notifications] = useState(3);
+    const { user, logout } = useAuth();
 
   const recentAppointments = [
     {
@@ -110,7 +112,7 @@ const DriverDashboard = () => {
             <div className="flex items-center justify-between mb-4">
               <div>
                 <h1 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">
-                  Olá, <span className="text-blue-600">João Silva</span>! 👋
+                  Olá, <span className="text-blue-600">{user.name}</span>! 👋
                 </h1>
                 <p className="text-gray-600">Como podemos ajudar você hoje?</p>
               </div>

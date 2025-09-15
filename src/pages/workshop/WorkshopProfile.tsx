@@ -1,103 +1,255 @@
-
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { 
-  ArrowLeft, 
-  Camera, 
-  MapPin, 
-  Clock, 
-  Star, 
+import React, { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Badge } from "@/components/ui/badge";
+import {
+  ArrowLeft,
+  Camera,
+  MapPin,
+  Clock,
+  Star,
   Save,
   Edit,
   Plus,
   X,
-  Shield
-} from 'lucide-react';
-import { Link } from 'react-router-dom';
+  Shield,
+  User,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import { oficinaService } from "@/services/Oficina";
+import { useCep } from "@/hooks/useCep";
+import { useAuth } from "@/contexts/AuthContext";
 
 const WorkshopProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
-  const [newService, setNewService] = useState('');
-  const [newSpecialty, setNewSpecialty] = useState('');
-  const [newCertification, setNewCertification] = useState('');
+  const [newService, setNewService] = useState("");
+  const [newSpecialty, setNewSpecialty] = useState("");
+  const [newCertification, setNewCertification] = useState("");
 
-  const [profileData, setProfileData] = useState({
-    name: 'Oficina Central',
-    email: 'contato@oficinacentral.com',
-    phone: '(11) 98765-4321',
-    whatsapp: '(11) 98765-4321',
-    address: 'Rua das Oficinas, 123 - Centro, São Paulo - SP',
-    cep: '01234-567',
-    cnpj: '12.345.678/0001-90',
-    description: 'Oficina especializada em serviços automotivos com mais de 20 anos de experiência no mercado.',
-    services: ['Revisão completa', 'Troca de óleo', 'Freios', 'Suspensão', 'Motor', 'Transmissão'],
-    specialties: ['Honda', 'Toyota', 'Volkswagen', 'Chevrolet'],
-    certifications: ['ISO 9001', 'Credenciada Honda', 'Certificação Bosch'],
-    workingHours: {
-      weekdays: '08:00 - 18:00',
-      saturday: '08:00 - 12:00',
-      sunday: 'Fechado'
-    }
+  const { handleCepChange } = useCep((data) => {
+    setProfileData((prev) => ({
+      ...prev,
+      address: data.address,
+      cep: data.cep,
+    }));
   });
 
-  const handleSave = () => {
-    setIsEditing(false);
-    // Aqui implementaria a lógica para salvar os dados
+  const { user } = useAuth();
+
+  const [profileData, setProfileData] = useState<{
+    name: string;
+    email: string;
+    phone: string;
+    whatsapp: string;
+    address: string;
+    cep: string;
+    cnpj: string;
+    description: string;
+    services: string[];
+    specialties: string[];
+    certifications: string[];
+    workingHours: {
+      weekdays: {
+        start: string;
+        end: string;
+      };
+      saturday: {
+        start: string;
+        end: string;
+      };
+      sunday: {
+        start: string;
+      };
+    };
+    avatar?: File | string;
+  }>({
+    name: "",
+    email: "",
+    phone: "",
+    whatsapp: "",
+    address: "",
+    cep: "",
+    cnpj: "",
+    description: "",
+    services: [],
+    specialties: [],
+    certifications: [],
+    workingHours: {
+      weekdays: {
+        start: "",
+        end: "",
+      },
+      saturday: {
+        start: "",
+        end: "",
+      },
+      sunday: {
+        start: "",
+      },
+    },
+
+    avatar: undefined,
+  });
+
+  useEffect(() => {
+    const carregarDados = async () => {
+      try {
+        const oficinaId = user?.id;
+        const data = await oficinaService.buscarPorId(oficinaId);
+        console.log("Dados da oficina:", data);
+        setProfileData({
+          name: data.nome || "",
+          email: data.email || "",
+          phone: data.telefone || "",
+          whatsapp: data.whatsapp || "",
+          address: data.endereco || "",
+          cep: data.cep || "",
+          cnpj: data.cnpj || "",
+          description: data.descricao || "",
+          services: data.servicos?.map((s: any) => s.nome) || [],
+          specialties: data.especialidades?.map((e: any) => e.marca) || [],
+          certifications: data.certificacoes?.map((c: any) => c.titulo) || [],
+          workingHours: {
+            weekdays: {
+              start: data.horarioSegSexInicio || "",
+              end: data.horarioSegSexFim || "",
+            },
+            saturday: {
+              start: data.horarioSabadoInicio || "",
+              end: data.horarioSabadoFim || "",
+            },
+            sunday: {
+              start: data.horarioDomingo || "",
+            },
+          },
+
+          avatar: data.avatar || undefined,
+        });
+      } catch (err) {
+        console.error("Erro ao carregar dados da oficina:", err);
+      }
+    };
+
+    carregarDados();
+  }, []);
+
+  const handleSave = async () => {
+    try {
+      const oficinaId = user?.id;
+
+      const formData = new FormData();
+
+      formData.append("nome", profileData.name);
+      formData.append("email", profileData.email);
+      formData.append("telefone", profileData.phone);
+      formData.append("whatsapp", profileData.whatsapp);
+      formData.append("cnpj", profileData.cnpj);
+      formData.append("endereco", profileData.address);
+      formData.append("cep", profileData.cep);
+      formData.append("descricao", profileData.description);
+      formData.append(
+        "horarioSegSexInicio",
+        profileData.workingHours.weekdays.start
+      );
+      formData.append(
+        "horarioSegSexFim",
+        profileData.workingHours.weekdays.end
+      );
+      formData.append(
+        "horarioSabadoInicio",
+        profileData.workingHours.saturday.start
+      );
+      formData.append(
+        "horarioSabadoFim",
+        profileData.workingHours.saturday.end
+      );
+      formData.append("horarioDomingo", profileData.workingHours.sunday.start);
+
+      profileData.services.forEach((s, i) => {
+        formData.append(`servicos[${i}]`, s);
+      });
+      profileData.specialties.forEach((m, i) => {
+        formData.append(`especialidades[${i}]`, m);
+      });
+      profileData.certifications.forEach((c, i) => {
+        formData.append(`certificacoes[${i}]`, c);
+      });
+
+      // Enviar imagem (avatar) se houver
+      if (profileData.avatar instanceof File) {
+        formData.append("avatar", profileData.avatar);
+      }
+
+      await oficinaService.atualizar(oficinaId, formData);
+      setIsEditing(false);
+    } catch (error) {
+      console.error("Erro ao salvar perfil:", error);
+    }
   };
 
   const addService = () => {
     if (newService.trim()) {
-      setProfileData(prev => ({
+      setProfileData((prev) => ({
         ...prev,
-        services: [...prev.services, newService.trim()]
+        services: [...prev.services, newService.trim()],
       }));
-      setNewService('');
+      setNewService("");
     }
   };
 
   const removeService = (index: number) => {
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
-      services: prev.services.filter((_, i) => i !== index)
+      services: prev.services.filter((_, i) => i !== index),
     }));
   };
 
   const addSpecialty = () => {
     if (newSpecialty.trim()) {
-      setProfileData(prev => ({
+      setProfileData((prev) => ({
         ...prev,
-        specialties: [...prev.specialties, newSpecialty.trim()]
+        specialties: [...prev.specialties, newSpecialty.trim()],
       }));
-      setNewSpecialty('');
+      setNewSpecialty("");
     }
   };
 
   const removeSpecialty = (index: number) => {
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
-      specialties: prev.specialties.filter((_, i) => i !== index)
+      specialties: prev.specialties.filter((_, i) => i !== index),
     }));
   };
 
   const addCertification = () => {
     if (newCertification.trim()) {
-      setProfileData(prev => ({
+      setProfileData((prev) => ({
         ...prev,
-        certifications: [...prev.certifications, newCertification.trim()]
+        certifications: [...prev.certifications, newCertification.trim()],
       }));
-      setNewCertification('');
+      setNewCertification("");
     }
   };
 
   const removeCertification = (index: number) => {
-    setProfileData(prev => ({
+    setProfileData((prev) => ({
       ...prev,
-      certifications: prev.certifications.filter((_, i) => i !== index)
+      certifications: prev.certifications.filter((_, i) => i !== index),
     }));
+  };
+
+  const generateTimeOptions = () => {
+    const times: string[] = [];
+    for (let h = 0; h < 24; h++) {
+      for (let m of [0, 30]) {
+        const hh = h.toString().padStart(2, "0");
+        const mm = m.toString().padStart(2, "0");
+        times.push(`${hh}:${mm}`);
+      }
+    }
+    return times;
   };
 
   return (
@@ -113,22 +265,30 @@ const WorkshopProfile = () => {
                   Voltar
                 </Button>
               </Link>
-              <h1 className="text-xl font-semibold text-gray-900">Configurações do Perfil</h1>
+              <h1 className="text-xl font-semibold text-gray-900">
+                Configurações do Perfil
+              </h1>
             </div>
-            
+
             <div className="flex items-center space-x-4">
               {isEditing ? (
                 <>
                   <Button variant="outline" onClick={() => setIsEditing(false)}>
                     Cancelar
                   </Button>
-                  <Button onClick={handleSave} className="bg-orange-500 hover:bg-orange-600">
+                  <Button
+                    onClick={handleSave}
+                    className="bg-orange-500 hover:bg-orange-600"
+                  >
                     <Save className="h-4 w-4 mr-2" />
                     Salvar
                   </Button>
                 </>
               ) : (
-                <Button onClick={() => setIsEditing(true)} className="bg-blue-600 hover:bg-blue-700">
+                <Button
+                  onClick={() => setIsEditing(true)}
+                  className="bg-blue-600 hover:bg-blue-700"
+                >
                   <Edit className="h-4 w-4 mr-2" />
                   Editar Perfil
                 </Button>
@@ -150,14 +310,48 @@ const WorkshopProfile = () => {
             </CardHeader>
             <CardContent className="space-y-6">
               <div className="flex items-center space-x-6">
-                <div className="w-24 h-24 bg-gradient-to-br from-blue-100 to-orange-100 rounded-xl flex items-center justify-center relative group cursor-pointer">
-                  <span className="text-2xl font-bold text-blue-600">OC</span>
+                <div className="w-24 h-24 bg-gray-100 rounded-xl relative group overflow-hidden flex items-center justify-center">
+                  {profileData.avatar instanceof File ? (
+                    <img
+                      src={URL.createObjectURL(profileData.avatar)}
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : profileData.avatar ? (
+                    <img
+                      src={
+                        profileData.avatar.startsWith("http")
+                          ? profileData.avatar
+                          : `http://oficinaja.com.br${profileData.avatar}`
+                      }
+                      alt="Avatar"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <User className="h-10 w-10 text-blue-500" /> // <- ícone padrão aqui
+                  )}
+
                   {isEditing && (
-                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <label className="absolute inset-0 bg-black bg-opacity-50 rounded-xl flex items-center justify-center opacity-0 group-hover:opacity-100 cursor-pointer transition-opacity">
                       <Camera className="h-6 w-6 text-white" />
-                    </div>
+                      <input
+                        type="file"
+                        accept="image/*"
+                        className="hidden"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            setProfileData((prev) => ({
+                              ...prev,
+                              avatar: file,
+                            }));
+                          }
+                        }}
+                      />
+                    </label>
                   )}
                 </div>
+
                 <div className="flex-1">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div>
@@ -165,9 +359,14 @@ const WorkshopProfile = () => {
                       <Input
                         id="name"
                         value={profileData.name}
-                        onChange={(e) => setProfileData(prev => ({ ...prev, name: e.target.value }))}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            name: e.target.value,
+                          }))
+                        }
                         disabled={!isEditing}
-                        className={!isEditing ? 'bg-gray-50' : ''}
+                        className={!isEditing ? "bg-gray-50" : ""}
                       />
                     </div>
                     <div>
@@ -175,9 +374,14 @@ const WorkshopProfile = () => {
                       <Input
                         id="cnpj"
                         value={profileData.cnpj}
-                        onChange={(e) => setProfileData(prev => ({ ...prev, cnpj: e.target.value }))}
+                        onChange={(e) =>
+                          setProfileData((prev) => ({
+                            ...prev,
+                            cnpj: e.target.value,
+                          }))
+                        }
                         disabled={!isEditing}
-                        className={!isEditing ? 'bg-gray-50' : ''}
+                        className={!isEditing ? "bg-gray-50" : ""}
                       />
                     </div>
                   </div>
@@ -191,9 +395,14 @@ const WorkshopProfile = () => {
                     id="email"
                     type="email"
                     value={profileData.email}
-                    onChange={(e) => setProfileData(prev => ({ ...prev, email: e.target.value }))}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
                     disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
+                    className={!isEditing ? "bg-gray-50" : ""}
                   />
                 </div>
                 <div>
@@ -201,9 +410,14 @@ const WorkshopProfile = () => {
                   <Input
                     id="phone"
                     value={profileData.phone}
-                    onChange={(e) => setProfileData(prev => ({ ...prev, phone: e.target.value }))}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        phone: e.target.value,
+                      }))
+                    }
                     disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
+                    className={!isEditing ? "bg-gray-50" : ""}
                   />
                 </div>
               </div>
@@ -213,9 +427,16 @@ const WorkshopProfile = () => {
                 <textarea
                   id="description"
                   value={profileData.description}
-                  onChange={(e) => setProfileData(prev => ({ ...prev, description: e.target.value }))}
+                  onChange={(e) =>
+                    setProfileData((prev) => ({
+                      ...prev,
+                      description: e.target.value,
+                    }))
+                  }
                   disabled={!isEditing}
-                  className={`w-full min-h-[100px] p-3 border rounded-md resize-none ${!isEditing ? 'bg-gray-50' : ''}`}
+                  className={`w-full min-h-[100px] p-3 border rounded-md resize-none ${
+                    !isEditing ? "bg-gray-50" : ""
+                  }`}
                   placeholder="Descreva sua oficina, experiência e diferenciais..."
                 />
               </div>
@@ -236,9 +457,14 @@ const WorkshopProfile = () => {
                 <Input
                   id="address"
                   value={profileData.address}
-                  onChange={(e) => setProfileData(prev => ({ ...prev, address: e.target.value }))}
+                  onChange={(e) =>
+                    setProfileData((prev) => ({
+                      ...prev,
+                      address: e.target.value,
+                    }))
+                  }
                   disabled={!isEditing}
-                  className={!isEditing ? 'bg-gray-50' : ''}
+                  className={!isEditing ? "bg-gray-50" : ""}
                 />
               </div>
               <div className="grid md:grid-cols-2 gap-4">
@@ -247,9 +473,9 @@ const WorkshopProfile = () => {
                   <Input
                     id="cep"
                     value={profileData.cep}
-                    onChange={(e) => setProfileData(prev => ({ ...prev, cep: e.target.value }))}
+                    onChange={(e) => handleCepChange(e.target.value)}
                     disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
+                    className={!isEditing ? "bg-gray-50" : ""}
                   />
                 </div>
                 <div>
@@ -257,9 +483,14 @@ const WorkshopProfile = () => {
                   <Input
                     id="whatsapp"
                     value={profileData.whatsapp}
-                    onChange={(e) => setProfileData(prev => ({ ...prev, whatsapp: e.target.value }))}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        whatsapp: e.target.value,
+                      }))
+                    }
                     disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
+                    className={!isEditing ? "bg-gray-50" : ""}
                   />
                 </div>
               </div>
@@ -276,89 +507,143 @@ const WorkshopProfile = () => {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="grid md:grid-cols-3 gap-4">
+                {/* Segunda a Sexta */}
                 <div>
-                  <Label htmlFor="weekdays">Segunda a Sexta</Label>
-                  <Input
-                    id="weekdays"
-                    value={profileData.workingHours.weekdays}
-                    onChange={(e) => setProfileData(prev => ({ 
-                      ...prev, 
-                      workingHours: { ...prev.workingHours, weekdays: e.target.value }
-                    }))}
-                    disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
-                  />
+                  <Label>Segunda a Sexta</Label>
+                  <div className="flex gap-2">
+                    <select
+                      value={profileData.workingHours.weekdays.start}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          workingHours: {
+                            ...prev.workingHours,
+                            weekdays: {
+                              ...prev.workingHours.weekdays,
+                              start: e.target.value,
+                            },
+                          },
+                        }))
+                      }
+                      disabled={!isEditing}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      {generateTimeOptions().map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={profileData.workingHours.weekdays.end}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          workingHours: {
+                            ...prev.workingHours,
+                            weekdays: {
+                              ...prev.workingHours.weekdays,
+                              end: e.target.value,
+                            },
+                          },
+                        }))
+                      }
+                      disabled={!isEditing}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      {generateTimeOptions().map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
+
+                {/* Sábado */}
                 <div>
-                  <Label htmlFor="saturday">Sábado</Label>
-                  <Input
-                    id="saturday"
-                    value={profileData.workingHours.saturday}
-                    onChange={(e) => setProfileData(prev => ({ 
-                      ...prev, 
-                      workingHours: { ...prev.workingHours, saturday: e.target.value }
-                    }))}
-                    disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
-                  />
+                  <Label>Sábado</Label>
+                  <div className="flex gap-2">
+                    <select
+                      value={profileData.workingHours.saturday.start}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          workingHours: {
+                            ...prev.workingHours,
+                            saturday: {
+                              ...prev.workingHours.saturday,
+                              start: e.target.value,
+                            },
+                          },
+                        }))
+                      }
+                      disabled={!isEditing}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      {generateTimeOptions().map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                    <select
+                      value={profileData.workingHours.saturday.end}
+                      onChange={(e) =>
+                        setProfileData((prev) => ({
+                          ...prev,
+                          workingHours: {
+                            ...prev.workingHours,
+                            saturday: {
+                              ...prev.workingHours.saturday,
+                              end: e.target.value,
+                            },
+                          },
+                        }))
+                      }
+                      disabled={!isEditing}
+                      className="w-full p-2 border rounded-md"
+                    >
+                      {generateTimeOptions().map((time) => (
+                        <option key={time} value={time}>
+                          {time}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
+
+                {/* Domingo */}
                 <div>
-                  <Label htmlFor="sunday">Domingo</Label>
-                  <Input
-                    id="sunday"
-                    value={profileData.workingHours.sunday}
-                    onChange={(e) => setProfileData(prev => ({ 
-                      ...prev, 
-                      workingHours: { ...prev.workingHours, sunday: e.target.value }
-                    }))}
+                  <Label>Domingo</Label>
+                  <select
+                    value={profileData.workingHours.sunday.start}
+                    onChange={(e) =>
+                      setProfileData((prev) => ({
+                        ...prev,
+                        workingHours: {
+                          ...prev.workingHours,
+                          sunday: {
+                            start: e.target.value,
+                          },
+                        },
+                      }))
+                    }
                     disabled={!isEditing}
-                    className={!isEditing ? 'bg-gray-50' : ''}
-                  />
+                    className="w-full p-2 border rounded-md"
+                  >
+                    {generateTimeOptions().map((time) => (
+                      <option key={time} value={time}>
+                        {time}
+                      </option>
+                    ))}
+                  </select>
                 </div>
               </div>
             </CardContent>
           </Card>
 
-          {/* Services */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Star className="h-5 w-5 text-purple-600" />
-                Serviços Oferecidos
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {isEditing && (
-                <div className="flex gap-2">
-                  <Input
-                    placeholder="Adicionar novo serviço..."
-                    value={newService}
-                    onChange={(e) => setNewService(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addService()}
-                  />
-                  <Button onClick={addService} size="sm">
-                    <Plus className="h-4 w-4" />
-                  </Button>
-                </div>
-              )}
-              <div className="flex flex-wrap gap-2">
-                {profileData.services.map((service, index) => (
-                  <Badge key={index} variant="outline" className="bg-purple-50 text-purple-700 border-purple-200">
-                    {service}
-                    {isEditing && (
-                      <button
-                        onClick={() => removeService(index)}
-                        className="ml-2 hover:text-red-600"
-                      >
-                        <X className="h-3 w-3" />
-                      </button>
-                    )}
-                  </Badge>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-
+         
           {/* Specialties */}
           <Card>
             <CardHeader>
@@ -374,7 +659,7 @@ const WorkshopProfile = () => {
                     placeholder="Adicionar nova especialidade..."
                     value={newSpecialty}
                     onChange={(e) => setNewSpecialty(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addSpecialty()}
+                    onKeyPress={(e) => e.key === "Enter" && addSpecialty()}
                   />
                   <Button onClick={addSpecialty} size="sm">
                     <Plus className="h-4 w-4" />
@@ -383,7 +668,11 @@ const WorkshopProfile = () => {
               )}
               <div className="flex flex-wrap gap-2">
                 {profileData.specialties.map((specialty, index) => (
-                  <Badge key={index} variant="outline" className="bg-blue-50 text-blue-700 border-blue-200">
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="bg-blue-50 text-blue-700 border-blue-200"
+                  >
                     {specialty}
                     {isEditing && (
                       <button
@@ -414,7 +703,7 @@ const WorkshopProfile = () => {
                     placeholder="Adicionar nova certificação..."
                     value={newCertification}
                     onChange={(e) => setNewCertification(e.target.value)}
-                    onKeyPress={(e) => e.key === 'Enter' && addCertification()}
+                    onKeyPress={(e) => e.key === "Enter" && addCertification()}
                   />
                   <Button onClick={addCertification} size="sm">
                     <Plus className="h-4 w-4" />
@@ -423,7 +712,11 @@ const WorkshopProfile = () => {
               )}
               <div className="flex flex-wrap gap-2">
                 {profileData.certifications.map((certification, index) => (
-                  <Badge key={index} variant="outline" className="bg-green-50 text-green-700 border-green-200">
+                  <Badge
+                    key={index}
+                    variant="outline"
+                    className="bg-green-50 text-green-700 border-green-200"
+                  >
                     {certification}
                     {isEditing && (
                       <button

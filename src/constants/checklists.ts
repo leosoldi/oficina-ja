@@ -61,3 +61,10 @@ export const checklistCategories = [
   { value: 'repair', label: 'Reparo' },
   { value: 'custom', label: 'Personalizado' }
 ];
+
+
+export const clientesMock = [
+  { id: "moto_001", nome: "João da Silva" },
+  { id: "moto_002", nome: "Maria Souza" },
+  { id: "moto_003", nome: "Carlos Pereira" },
+];

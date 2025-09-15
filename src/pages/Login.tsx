@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import WorkshopLoginForm from '@/components/WorkshopLoginForm';
 import DriverLoginForm from '@/components/DriverLoginForm';
 import { Wrench, User } from 'lucide-react';
+import { SocialLoginButton } from '@/components/GoogleButton';
 
 const Login = () => {
   return (

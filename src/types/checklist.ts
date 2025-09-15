@@ -16,6 +16,7 @@ export interface Checklist {
   lastUsed?: string;
   usageCount: number;
   isTemplate: boolean;
+  updatedAt: string;
 }
 
 export interface ChecklistStats {
@@ -24,3 +25,12 @@ export interface ChecklistStats {
   completedToday: number;
   averageCompletion: number;
 }
+
+export type NewChecklistPayload = {
+  title: string;
+  description: string;
+  category: string;
+  items: ChecklistItem[];
+  isTemplate: boolean;
+  assignedToMotoristaId?: string | null; // opcional
+};

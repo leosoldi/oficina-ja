@@ -1,156 +1,72 @@
+import React from "react";
+import type { AppointmentUI, AppointmentUIStatus } from "@/types/appointment-ui";
+import { Pencil, Eye } from "lucide-react"; // ajuste se usar outros ícones
 
-import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Clock, 
-  Car, 
-  Phone, 
-  Mail,
-  Eye,
-  Edit,
-  CheckCircle
-} from 'lucide-react';
-import { Appointment } from '@/types/appointment';
-import AppointmentStatusModal from './AppointmentStatusModal';
+type Props = {
+  appointment: AppointmentUI;
+  getStatusColor: (status: AppointmentUIStatus) => string;
+  getStatusText: (status: AppointmentUIStatus) => string;
+  onUpdateAppointment?: (updatedAppointment: AppointmentUI) => void;
+};
 
-interface AppointmentCardProps {
-  appointment: Appointment;
-  getStatusColor: (status: string) => string;
-  getStatusText: (status: string) => string;
-  onUpdateAppointment?: (updatedAppointment: Appointment) => void;
-}
-
-const AppointmentCard = ({ 
-  appointment, 
-  getStatusColor, 
+const AppointmentCard: React.FC<Props> = ({
+  appointment,
+  getStatusColor,
   getStatusText,
-  onUpdateAppointment 
-}: AppointmentCardProps) => {
-  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
+  onUpdateAppointment,
+}) => {
+  const { time, duration, client, phone, email, vehicle, plate, service, status, notes } =
+    appointment;
 
-  const handleUpdateStatus = (appointmentId: number, newStatus: string, statusNotes: string) => {
-    console.log('Updating appointment status:', { appointmentId, newStatus, statusNotes });
-    
-    const updatedAppointment = {
-      ...appointment,
-      status: newStatus,
-      notes: statusNotes || appointment.notes
-    };
-    
-    if (onUpdateAppointment) {
-      onUpdateAppointment(updatedAppointment);
-    }
-  };
-
-  const handleStartService = () => {
-    setIsStatusModalOpen(true);
-  };
-
-  const handleEditAppointment = () => {
-    setIsStatusModalOpen(true);
-  };
-
-  const handleFinishService = () => {
-    const updatedAppointment = {
-      ...appointment,
-      status: 'completed'
-    };
-    
-    if (onUpdateAppointment) {
-      onUpdateAppointment(updatedAppointment);
-    }
+  const handleChangeStatus = (next: AppointmentUIStatus) => {
+    if (!onUpdateAppointment) return;
+    onUpdateAppointment({ ...appointment, status: next });
   };
 
   return (
-    <>
-      <div className="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
-        <div className="flex items-start justify-between">
-          <div className="flex items-start space-x-4 flex-1">
-            <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-              <Clock className="h-6 w-6 text-blue-600" />
-            </div>
-            <div className="flex-1">
-              <div className="flex items-center justify-between mb-2">
-                <h3 className="font-semibold text-gray-900">{appointment.client}</h3>
-                <div className="flex items-center space-x-2">
-                  <span className="text-sm font-medium text-gray-600">
-                    {appointment.time} ({appointment.duration})
-                  </span>
-                  <Badge className={getStatusColor(appointment.status)}>
-                    {getStatusText(appointment.status)}
-                  </Badge>
-                </div>
-              </div>
-              
-              <div className="grid md:grid-cols-2 gap-4 text-sm text-gray-600">
-                <div className="space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <Car className="h-4 w-4" />
-                    <span>{appointment.vehicle} - {appointment.plate}</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Phone className="h-4 w-4" />
-                    <span>{appointment.phone}</span>
-                  </div>
-                </div>
-                <div className="space-y-1">
-                  <div className="flex items-center space-x-2">
-                    <Mail className="h-4 w-4" />
-                    <span>{appointment.email}</span>
-                  </div>
-                  <div className="font-medium text-blue-600">
-                    {appointment.service}
-                  </div>
-                </div>
-              </div>
-              
-              {appointment.notes && (
-                <div className="mt-2 p-2 bg-gray-50 rounded text-sm text-gray-600">
-                  <strong>Observações:</strong> {appointment.notes}
-                </div>
-              )}
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-2 ml-4">
-            <Button variant="outline" size="sm">
-              <Eye className="h-4 w-4" />
-            </Button>
-            <Button variant="outline" size="sm" onClick={handleEditAppointment}>
-              <Edit className="h-4 w-4" />
-            </Button>
-            {appointment.status === 'confirmed' && (
-              <Button 
-                size="sm" 
-                className="bg-green-600 hover:bg-green-700"
-                onClick={handleStartService}
-              >
-                <CheckCircle className="h-4 w-4 mr-1" />
-                Iniciar
-              </Button>
-            )}
-            {['in-progress', 'analyzing', 'waiting-parts', 'almost-done'].includes(appointment.status) && (
-              <Button 
-                size="sm" 
-                className="bg-blue-600 hover:bg-blue-700"
-                onClick={handleFinishService}
-              >
-                <CheckCircle className="h-4 w-4 mr-1" />
-                Finalizar
-              </Button>
-            )}
-          </div>
+    <div className="border rounded-lg px-4 py-3 flex items-start gap-4">
+      <div className="w-12 h-12 rounded-full bg-blue-50 flex items-center justify-center">🕒</div>
+
+      <div className="flex-1">
+        <div className="flex items-center gap-2 flex-wrap">
+          <span className="font-semibold">{client}</span>
+          <span className="text-sm text-gray-500">
+            {time} • {duration}
+          </span>
+          <span className={`text-xs px-2 py-0.5 rounded ${getStatusColor(status)}`}>
+            {getStatusText(status)}
+          </span>
         </div>
+
+        <div className="text-sm text-gray-600">
+          {vehicle && <span className="mr-2">{vehicle}</span>}
+          {plate && <span className="mr-2">• {plate}</span>}
+          {service && <span className="text-blue-700 ml-2">{service}</span>}
+        </div>
+
+        {notes && <div className="mt-1 text-sm bg-gray-50 rounded p-2">{notes}</div>}
+        {(phone || email) && (
+          <div className="mt-1 text-xs text-gray-500">
+            {phone && <span className="mr-3">📞 {phone}</span>}
+            {email && <span>✉️ {email}</span>}
+          </div>
+        )}
       </div>
 
-      <AppointmentStatusModal
-        isOpen={isStatusModalOpen}
-        onClose={() => setIsStatusModalOpen(false)}
-        appointment={appointment}
-        onUpdateStatus={handleUpdateStatus}
-      />
-    </>
+      <div className="flex flex-col gap-2">
+        <button className="rounded border px-2 py-1 text-sm flex items-center gap-1">
+          <Eye className="w-4 h-4" />
+          Ver
+        </button>
+        <button
+          className="rounded border px-2 py-1 text-sm flex items-center gap-1"
+          onClick={() => handleChangeStatus("in-progress")}
+        >
+          <Pencil className="w-4 h-4" />
+          Iniciar
+        </button>
+      </div>
+    </div>
   );
 };
 

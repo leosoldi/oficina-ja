@@ -1,42 +1,28 @@
-
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Search, Calendar as CalendarIcon } from 'lucide-react';
-import AppointmentCard from './AppointmentCard';
-
-interface Appointment {
-  id: number;
-  time: string;
-  duration: string;
-  client: string;
-  phone: string;
-  email: string;
-  vehicle: string;
-  plate: string;
-  service: string;
-  status: string;
-  notes: string;
-}
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Search, Calendar as CalendarIcon } from "lucide-react";
+import AppointmentCard from "./AppointmentCard";
+import type { AppointmentUI } from "@/types/appointment-ui";
 
 interface AppointmentListProps {
-  appointments: Appointment[];
-  statusFilter: string;
-  onStatusFilterChange: (filter: string) => void;
-  getStatusColor: (status: string) => string;
-  getStatusText: (status: string) => string;
-  onUpdateAppointment?: (updatedAppointment: Appointment) => void;
+  appointments: AppointmentUI[];
+  statusFilter: "all" | AppointmentUI["status"];
+  onStatusFilterChange: (filter: "all" | AppointmentUI["status"]) => void;
+  getStatusColor: (status: AppointmentUI["status"]) => string;
+  getStatusText: (status: AppointmentUI["status"]) => string;
+  onUpdateAppointment?: (updatedAppointment: AppointmentUI) => void;
 }
 
-const AppointmentList = ({ 
-  appointments, 
-  statusFilter, 
-  onStatusFilterChange, 
-  getStatusColor, 
+const AppointmentList: React.FC<AppointmentListProps> = ({
+  appointments,
+  statusFilter,
+  onStatusFilterChange,
+  getStatusColor,
   getStatusText,
-  onUpdateAppointment
-}: AppointmentListProps) => {
-  const filteredAppointments = appointments.filter(appointment => 
-    statusFilter === 'all' || appointment.status === statusFilter
+  onUpdateAppointment,
+}) => {
+  const filteredAppointments = appointments.filter(
+    (a) => statusFilter === "all" || a.status === statusFilter
   );
 
   return (
@@ -48,7 +34,7 @@ const AppointmentList = ({
           </CardTitle>
           <div className="flex items-center space-x-2">
             <div className="relative">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 h-4 w-4" />
               <input
                 type="text"
                 placeholder="Buscar cliente..."
@@ -57,7 +43,9 @@ const AppointmentList = ({
             </div>
             <select
               value={statusFilter}
-              onChange={(e) => onStatusFilterChange(e.target.value)}
+              onChange={(e) =>
+                onStatusFilterChange(e.target.value as "all" | AppointmentUI["status"])
+              }
               className="px-3 py-2 border border-gray-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="all">Todos</option>
@@ -68,10 +56,12 @@ const AppointmentList = ({
               <option value="almost-done">Quase concluído</option>
               <option value="waiting">Aguardando</option>
               <option value="completed">Concluído</option>
+              <option value="cancelled">Cancelado</option>
             </select>
           </div>
         </div>
       </CardHeader>
+
       <CardContent>
         <div className="space-y-4">
           {filteredAppointments.map((appointment) => (
@@ -84,7 +74,7 @@ const AppointmentList = ({
             />
           ))}
         </div>
-        
+
         {filteredAppointments.length === 0 && (
           <div className="text-center py-8">
             <CalendarIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />

@@ -1,17 +1,12 @@
-
-export interface Appointment {
-  id: number;
-  time: string;
-  duration: string;
-  client: string;
-  phone: string;
-  email: string;
-  vehicle: string;
-  plate: string;
-  service: string;
-  status: string;
-  notes: string;
-}
+export type Appointment = {
+  id: string;
+  date: string;         // ISO
+  startTime: string;    // "09:00"
+  endTime: string;      // "09:30"
+  serviceId: string;
+  vetId?: string;
+  notes?: string;
+};
 
 export interface AppointmentStatusModalProps {
   isOpen: boolean;

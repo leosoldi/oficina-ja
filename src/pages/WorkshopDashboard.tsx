@@ -5,8 +5,11 @@ import StatsCards from '@/components/dashboard/StatsCards';
 import QuickActions from '@/components/dashboard/QuickActions';
 import TodayAppointments from '@/components/dashboard/TodayAppointments';
 import RecentQuotes from '@/components/dashboard/RecentQuotes';
+import { useAuth } from '@/contexts/AuthContext';
+
 
 const WorkshopDashboard = () => {
+  const { user } = useAuth();
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50">
       <DashboardHeader />
@@ -15,7 +18,7 @@ const WorkshopDashboard = () => {
         {/* Welcome Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Bem-vindo, <span className="text-orange-500">Oficina Central</span>
+            Bem-vindo, <span className="text-orange-500">{user?.name}</span>
           </h1>
           <p className="text-gray-600">Gerencie seus serviços, agendamentos e clientes de forma eficiente.</p>
         </div>

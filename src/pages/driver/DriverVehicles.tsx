@@ -105,7 +105,7 @@ const DriverVehicles = () => {
       {
         id: 'maint-2',
         date: '2024-01-20',
-        workshop: 'Oficina Central',
+        workshop: 'Oficina Centralaaa',
         location: 'São Paulo, SP',
         type: 'repair',
         services: ['Troca de pastilhas de freio', 'Alinhamento'],
